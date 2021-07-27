@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:src="@drawable/noimage"
+        android:id="@+id/imgJewellery"
+        android:scaleType="centerInside"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_140sdp"></ImageView>
+    <TextView
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textFontWeight="600"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/opensans_regular"
+        android:text="STUDS"
+        android:gravity="center"
+        android:background="@color/navigation_color"
+        android:layout_below="@id/imgJewellery"
+        android:id="@+id/tvJewelleryName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_38sdp"></TextView>
+</RelativeLayout>

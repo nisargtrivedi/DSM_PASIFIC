@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_30sdp">
+
+    <TextView
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="DSM PACIFIC"
+        android:fontFamily="@font/mon_medium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></TextView>
+</RelativeLayout>

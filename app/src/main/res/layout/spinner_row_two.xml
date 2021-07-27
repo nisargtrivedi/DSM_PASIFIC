@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_30sdp"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall">
+
+    <TextView
+        android:paddingLeft="@dimen/_10sdp"
+        android:gravity="center|left"
+        android:textSize="@dimen/_9ssp"
+        android:textFontWeight="300"
+        android:fontFamily="@font/opensans_regular"
+        android:id="@+id/textViewName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:text="Item Name"
+        android:textColor="#029AA7"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        />
+</RelativeLayout>

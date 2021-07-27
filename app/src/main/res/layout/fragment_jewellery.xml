@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<RelativeLayout
+android:background="@color/app_back_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llHeader"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp">
+
+        <TextView
+            android:gravity="center|left"
+            android:textSize="@dimen/_9ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/opensans_regular"
+            android:text="Select Inventory :"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spCategory"
+            android:background="@drawable/arrow_down"
+            android:textColor="@color/white"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp">
+
+        </Spinner>
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/tvSortBy"
+            android:gravity="center"
+            android:textSize="@dimen/_9ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/opensans_regular"
+            android:text="Sort By :"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+        </TextView>
+        <Spinner
+            android:spinnerMode="dropdown"
+            android:visibility="invisible"
+            android:id="@+id/spSorting"
+            android:background="@drawable/arrow_down"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp">
+
+        </Spinner>
+    </LinearLayout>
+    <TextView
+        android:textSize="@dimen/_13ssp"
+        android:visibility="gone"
+        android:id="@+id/tvCategory"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_below="@id/llHeader"
+        android:text="STUDS"
+        android:textFontWeight="400"
+        android:textColor="#16F1FF"
+        android:fontFamily="@font/opensans_regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    <View
+        android:visibility="gone"
+        android:id="@+id/line"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_below="@id/tvCategory"
+        android:background="#16F1FF"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"></View>
+    <TextView
+        android:textFontWeight="600"
+        android:visibility="gone"
+        android:textSize="@dimen/_8ssp"
+        android:id="@+id/tvItemCount"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_below="@id/line"
+        android:text="0 product(s) found."
+        android:textColor="@color/white"
+        android:fontFamily="@font/opensans_regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fillViewport="true"
+        android:layout_below="@id/tvItemCount"
+        android:layout_above="@id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:nestedScrollingEnabled="false"
+                android:id="@+id/rvJewellery"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:nestedScrollingEnabled="false"
+                android:id="@+id/rvModel"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+<include android:id="@+id/bottomLayout" layout="@layout/bottom" android:layout_height="@dimen/_30sdp" android:layout_width="match_parent" android:layout_alignParentBottom="true"></include>
+</RelativeLayout>
+</layout>

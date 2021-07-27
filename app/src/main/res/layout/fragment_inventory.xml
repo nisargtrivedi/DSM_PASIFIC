@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<RelativeLayout
+android:background="@color/app_back_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/rlMenu"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/round_app_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp">
+
+        <TextView
+            android:gravity="center|left"
+            android:id="@+id/edtSearch"
+            android:drawablePadding="@dimen/_6sdp"
+            android:drawableLeft="@drawable/ic_search"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/mon_medium"
+            android:paddingLeft="@dimen/_10sdp"
+            android:hint="Certified diamond inventory"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/round_editext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"></TextView>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabShapes"
+            android:backgroundTint="@color/app_back_color"
+            android:background="@drawable/round_app_color"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/tab_text"
+            app:tabIndicatorColor="@color/black"
+            app:tabTextColor="@color/tab_color"
+            app:tabSelectedTextColor="@color/tab_color"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+        </com.google.android.material.tabs.TabLayout>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_above="@id/bottomLayout"
+        android:layout_below="@id/rlMenu"
+        android:id="@+id/rvInventory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:translationZ="@dimen/_10sdp"
+        android:visibility="gone"
+        android:id="@+id/tvDiamongEnquiry"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/tvSelectAll"
+        android:padding="@dimen/_10sdp"
+        android:gravity="center"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:strokeColor="@color/black"
+        app:strokeWidth="@dimen/_1sdp"
+        android:textSize="@dimen/_8ssp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:fontFamily="@font/mon_medium"
+        android:minWidth="@dimen/_100sdp"
+        app:cornerRadius="@dimen/_8sdp"
+        app:rippleColor="@color/navigation_color"
+        android:text="@string/diamond_enquiry"
+        app:backgroundTint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_40sdp" />
+
+    <com.google.android.material.button.MaterialButton
+        app:strokeColor="@color/black"
+        app:strokeWidth="@dimen/_1sdp"
+        android:translationZ="@dimen/_10sdp"
+        android:visibility="gone"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="@dimen/_100sdp"
+        android:id="@+id/tvSelectAll"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/floating_action_button"
+        android:padding="@dimen/_10sdp"
+        android:gravity="center"
+        app:rippleColor="@color/navigation_color"
+        android:textSize="@dimen/_8ssp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/mon_medium"
+        android:text="@string/select_all_shapes"
+        app:cornerRadius="@dimen/_8sdp"
+        android:backgroundTint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_40sdp" />
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_above="@id/bottomLayout"
+        android:layout_width="wrap_content"
+        android:elevation="@dimen/_10sdp"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:background="@color/white"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/_20sdp"
+        app:srcCompat="@drawable/ic_flat_menu"/>
+<include android:id="@+id/bottomLayout" layout="@layout/bottom" android:layout_height="@dimen/_30sdp" android:layout_width="match_parent" android:layout_alignParentBottom="true"></include>
+</RelativeLayout>
+</layout>

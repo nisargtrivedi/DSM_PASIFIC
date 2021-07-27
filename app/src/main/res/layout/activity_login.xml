@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.core.widget.NestedScrollView
+    android:fillViewport="true"
+    android:background="@color/app_back_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/app_back_color"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/logo"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ImageView>
+
+    <TextView
+        android:fontFamily="@font/mon_semibold"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:gravity="center"
+        android:textSize="@dimen/_15ssp"
+        android:textColor="@color/white"
+        android:layout_below="@id/logo"
+        android:text="@string/dsm_pacific_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:singleLine="true"
+        android:fontFamily="@font/mon_regular"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/edtUsername"
+        android:hint="@string/username"
+        android:backgroundTint="@color/white"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp">
+
+    </androidx.appcompat.widget.AppCompatEditText>
+    <androidx.appcompat.widget.AppCompatEditText
+        android:singleLine="true"
+        android:fontFamily="@font/mon_regular"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/edtPassword"
+        android:hint="@string/password"
+        android:backgroundTint="@color/white"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp">
+
+    </androidx.appcompat.widget.AppCompatEditText>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignin"
+        android:layout_gravity="center"
+        android:fontFamily="@font/mon_regular"
+        android:text="Sign In"
+        android:textSize="@dimen/_13ssp"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:backgroundTint="@color/button_color"
+        android:layout_height="@dimen/_45sdp"></com.google.android.material.button.MaterialButton>
+<TextView
+    android:textSize="@dimen/_11ssp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:fontFamily="@font/mon_light"
+    android:textColor="@color/forgotpassword"
+    android:gravity="center"
+    android:text="@string/forgot_password"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+</layout>

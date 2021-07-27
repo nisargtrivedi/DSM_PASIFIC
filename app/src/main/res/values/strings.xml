@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">DSM</string>
+    <string name="dsm_pacific_login">DSM PACIFIC LOGIN</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="forgot_password"><u>Forgot Password</u></string>
+    <string name="select_portal">SELECT PORTAL</string>
+    <string name="diamond"><u>DIAMOND</u></string>
+    <string name="jewellery"><u>JEWELLERY</u></string>
+    <string name="title_activity_main_navigation">MainNavigation</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="toolbar_text">Certified Diamond Inventory</string>
+    <string name="jewellery_text">Jewellery inventory</string>
+
+
+    <string name="select_inventory"><u>SELECT INVENTORY</u></string>
+    <string name="certified">Certified</string>
+    <string name="ppct">PPCT</string>
+    <string name="diamond_enquiry">DIAMOND ENQUIRY</string>
+    <string name="select_all_shapes">SELECT ALL SHAPES</string>
+    <string name="jwelery_inventory">Jewellery inventory</string>
+    <string name="_18k_white_gold_stud_earrings_4claw_screw_back_setting_diamonds_colour_clarity_f_si">18K WHITE GOLD STUD EARRINGS, 4CLAW SCREW BACK SETTING DIAMONDS COLOUR/CLARITY F/SI</string>
+    <string name="aud_285_00">AUD $ 285.00</string>
+    <string name="logout"><u>Logout</u></string>
+
+    <string-array name="price">
+        <item>-- please select --</item>
+        <item>Price (L to H)</item>
+        <item>Price (H to L)</item>
+    </string-array>
+</resources>
