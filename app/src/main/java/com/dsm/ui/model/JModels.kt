@@ -15,7 +15,7 @@ class JModels : Serializable {
     var documentID : String = ""
 
     @SerializedName("price")
-    var price : String = ""
+    var price : String = "0"
 
     @SerializedName("image")
     var image : Image? = null

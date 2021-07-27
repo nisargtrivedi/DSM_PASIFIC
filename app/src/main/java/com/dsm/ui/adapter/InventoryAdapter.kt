@@ -145,28 +145,30 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
 
                     }
         )
-        if(task.diamond_status=="upcoming"){
+        if(task.diamond_status.toString().toLowerCase()=="upcoming"){
             holder.llStatus.setBackgroundColor(Color.parseColor("#5E541A"))
+        }else if(task.diamond_status.toString().toLowerCase()=="new arrival"){
+            holder.llStatus.setBackgroundColor(Color.parseColor("#0A8D5A"))
         }else{
             holder.llStatus.setBackgroundColor(Color.TRANSPARENT)
         }
         if(permissionModel.user_show_price){
             if(!permissionModel.show_price_aud){
-                holder.tvTotal.setText(task.diamond_selling_price)
-                holder.tvPPCT.setText(task.perct_price)
+                holder.tvTotal.text = task.diamond_selling_price
+                holder.tvPPCT.text = task.perct_price
             }else{
-                holder.tvTotal.setText(task.diamond_price_sell_AUD)
+                holder.tvTotal.text = task.diamond_price_sell_AUD
                 holder.tvPPCT.text = "-"
             }
         }else{
             if(permissionModel.show_price_aud){
-                holder.tvTotal.setText(task.diamond_selling_price)
-                holder.tvPPCT.setText(task.perct_price)
+                holder.tvTotal.text = task.diamond_selling_price
+                holder.tvPPCT.text = task.perct_price
             }
         }
 
 
-        holder.tvINS.setText(task.diamond_status)
+        holder.tvINS.text = task.diamond_status
 
 
 

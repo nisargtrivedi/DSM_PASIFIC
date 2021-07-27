@@ -236,14 +236,22 @@ class JewelleryListFragment : BaseFragment(),CoroutineScope,AdapterView.OnItemSe
                             it.jewelleryfrontcostaud.toInt()
 
                     }
+                    jmodelList.sortBy {
+                        it.price.toInt()
+                    }
                     jewelleryAdapter.notifyDataSetChanged()
+                    jewelleryModelAdapter.notifyDataSetChanged()
 
                 }else if(position==2){
 
                     jewelleryList.sortByDescending {
                         it.jewelleryfrontcostaud.toInt()
                     }
+                    jmodelList.sortByDescending {
+                        it.price.toInt()
+                    }
                     jewelleryAdapter.notifyDataSetChanged()
+                    jewelleryModelAdapter.notifyDataSetChanged()
                 }
             }
 
