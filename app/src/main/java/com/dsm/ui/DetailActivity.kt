@@ -122,6 +122,8 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                         .load(R.drawable.noimage)
                                                         .into(binding.img);
                                                 }
+                                                binding.rlImages.visibility = View.GONE
+                                                binding.img.visibility = View.VISIBLE
                                             }
 
                                         } else {
@@ -182,6 +184,9 @@ class DetailActivity : BaseActivity() , CoroutineScope {
 
                                                 imagesList.clear()
                                                 imagesList.addAll( resource.data.list.listModel!!.images!!)
+
+                                                binding.rlImages.visibility = View.VISIBLE
+                                                binding.img.visibility = View.GONE
 
                                                 images.clear()
                                                 imagesAdapter = DetailImageAdapter(this@DetailActivity,images)

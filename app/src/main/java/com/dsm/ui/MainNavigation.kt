@@ -33,6 +33,15 @@ class MainNavigation : BaseActivity() {
     lateinit var mDrawerToggle : ActionBarDrawerToggle
 
     var searchList:MutableList<String> = mutableListOf()
+    var ClarityList:MutableList<String> = mutableListOf()
+    var diaList:MutableList<String> = mutableListOf()
+    var cutList:MutableList<String> = mutableListOf()
+    var polList:MutableList<String> = mutableListOf()
+    var symList:MutableList<String> = mutableListOf()
+
+
+    var searchEditext = ""
+
     var categortList : ArrayList<JewelleryCategoryModel> = ArrayList()
     var selectedPosition = -1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -299,6 +308,7 @@ class MainNavigation : BaseActivity() {
         adapter.onJwelleryClick(object : onSearchItemClick {
             override fun onClick(obj: SearchItemModel) {
                 obj.isSelected = !obj.isSelected
+                addClarity(obj.name)
                 adapter.notifyDataSetChanged()
             }
         })
@@ -319,6 +329,49 @@ class MainNavigation : BaseActivity() {
         adapter.onJwelleryClick(object : onSearchItemClick {
             override fun onClick(obj: SearchItemModel) {
                 obj.isSelected = !obj.isSelected
+                addCut(obj.name)
+                adapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    fun loadPol(rv: RecyclerView) {
+        rv.layoutManager = GridLayoutManager(this, 1)
+        rv.setHasFixedSize(true)
+        val models: MutableList<SearchItemModel> = java.util.ArrayList()
+        models.add(SearchItemModel("EX"))
+        models.add(SearchItemModel("VG"))
+        models.add(SearchItemModel("GD"))
+        models.add(SearchItemModel("G"))
+        models.add(SearchItemModel("F"))
+        val adapter = SearchItemAdapter(this, models, 2)
+
+        rv.adapter = adapter
+        adapter.onJwelleryClick(object : onSearchItemClick {
+            override fun onClick(obj: SearchItemModel) {
+                obj.isSelected = !obj.isSelected
+                addPolKey(obj.name)
+                adapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    fun loadSym(rv: RecyclerView) {
+        rv.layoutManager = GridLayoutManager(this, 1)
+        rv.setHasFixedSize(true)
+        val models: MutableList<SearchItemModel> = java.util.ArrayList()
+        models.add(SearchItemModel("EX"))
+        models.add(SearchItemModel("VG"))
+        models.add(SearchItemModel("GD"))
+        models.add(SearchItemModel("G"))
+        models.add(SearchItemModel("F"))
+        val adapter = SearchItemAdapter(this, models, 2)
+
+        rv.adapter = adapter
+        adapter.onJwelleryClick(object : onSearchItemClick {
+            override fun onClick(obj: SearchItemModel) {
+                obj.isSelected = !obj.isSelected
+                addSymKey(obj.name)
                 adapter.notifyDataSetChanged()
             }
         })
@@ -348,6 +401,7 @@ class MainNavigation : BaseActivity() {
         adapter.onJwelleryClick(object : onSearchItemClick {
             override fun onClick(obj: SearchItemModel) {
                 obj.isSelected = !obj.isSelected
+                addDia(obj.name)
                 adapter.notifyDataSetChanged()
             }
         })
@@ -361,6 +415,7 @@ class MainNavigation : BaseActivity() {
         }
         //Log.e("TAG---",android.text.TextUtils.join(",", searchList))
     }
+
     fun shapeKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
@@ -377,6 +432,124 @@ class MainNavigation : BaseActivity() {
             "RADIANT" -> key="87"
             "RADIANT SQ" -> key="218"
         }
+        return key
+    }
+
+
+    fun addClarity(shape:String){
+        if(ClarityList.contains(clerityKey(shape))){
+            ClarityList.remove(clerityKey(shape))
+        }else{
+            ClarityList.add(clerityKey(shape))
+        }
+        //Log.e("TAG---",android.text.TextUtils.join(",", searchList))
+    }
+
+    fun clerityKey(shape: String) : String{
+        var key = ""
+        when(shape.toUpperCase()){
+            "D" -> key="3"
+            "E" -> key="11"
+            "F" -> key="22"
+            "G" -> key="23"
+            "H" -> key="26"
+            "I" -> key="27"
+            "J" -> key="28"
+            "K" -> key="29"
+            "L" -> key="30"
+            "M" -> key="31"
+            "N" -> key="32"
+        }
+        return key
+    }
+
+
+
+    fun addDia(shape:String){
+        if(diaList.contains(diaKey(shape))){
+            diaList.remove(diaKey(shape))
+        }else{
+            diaList.add(diaKey(shape))
+        }
+        //Log.e("TAG---",android.text.TextUtils.join(",", searchList))
+    }
+    fun diaKey(shape: String) : String{
+        var key = ""
+        when(shape.toUpperCase()){
+            "IF" -> key="188"
+            "VVS" -> key="238"
+            "VVS1" -> key="4"
+            "VVS2" -> key="12"
+            "VS" -> key="220"
+            "VS1" -> key="34"
+            "VS2" -> key="35"
+            "SI" -> key="219"
+            "SI1" -> key="36"
+            "SI2" -> key="37"
+            "SI3" -> key="189"
+            "I1" -> key="38"
+            "I2" -> key="38"
+            "I3" -> key="38"
+        }
+        return key
+    }
+
+    fun addCut(shape:String){
+        if(cutList.contains(FcutKey(shape))){
+            cutList.remove(FcutKey(shape))
+        }else{
+            cutList.add(FcutKey(shape))
+        }
+        //Log.e("TAG---",android.text.TextUtils.join(",", searchList))
+    }
+    fun FcutKey(shape: String) : String{
+        var key = ""
+        when(shape.toUpperCase()){
+            "EX" -> key="6"
+            "VG" -> key="13"
+            "GD" -> key="46"
+            "G" -> key="47"
+            "F" -> key="48" }
+        return key
+    }
+
+
+    fun addPolKey(shape:String){
+        if(polList.contains(diaPolKey(shape))){
+            polList.remove(diaPolKey(shape))
+        }else{
+            polList.add(diaPolKey(shape))
+        }
+        //Log.e("TAG---",android.text.TextUtils.join(",", searchList))
+    }
+    fun diaPolKey(shape: String) : String{
+        var key = ""
+        when(shape.toUpperCase()){
+            "EX" -> key="7"
+            "VG" -> key="14"
+            "GD" -> key="52"
+            "G" -> key="53"
+            "F" -> key="54" }
+        return key
+    }
+
+
+    fun addSymKey(shape:String){
+        if(symList.contains(diasymKey(shape))){
+            symList.remove(diasymKey(shape))
+        }else{
+            symList.add(diasymKey(shape))
+        }
+        //Log.e("TAG---",android.text.TextUtils.join(",", searchList))
+    }
+    fun diasymKey(shape: String) : String{
+        var key = ""
+        when(shape.toUpperCase()){
+            "EX" -> key="8"
+            "VG" -> key="15"
+            "GD" -> key="49"
+            "G" -> key="50"
+            "F" -> key="51" }
         return key
     }
 }

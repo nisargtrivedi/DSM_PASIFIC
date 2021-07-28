@@ -168,10 +168,18 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         }
 
         var search = if((context as MainNavigation).searchList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).searchList) +"]"
+        var clr = if((context as MainNavigation).ClarityList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).ClarityList) +"]"
+        var dia = if((context as MainNavigation).diaList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).diaList) +"]"
+
+        var cut = if((context as MainNavigation).cutList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).cutList) +"]"
+        var pol = if((context as MainNavigation).polList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).polList) +"]"
+        var sym = if((context as MainNavigation).symList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).symList) +"]"
+
+        var edtSearch =  if((context as MainNavigation).searchEditext.isNullOrEmpty()) null else (context as MainNavigation).searchEditext
 
         var diamondViewModel  = ViewModelProvider(this,ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
         pageNo++
-        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com",shape,pageNo,null,null,null,search,null,null,null,null).observe(requireActivity(),{
+        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com",shape,pageNo,edtSearch,null,null,search,null,clr,dia,null).observe(requireActivity(),{
             it?.let {
                     resource ->
                 when(resource.status){

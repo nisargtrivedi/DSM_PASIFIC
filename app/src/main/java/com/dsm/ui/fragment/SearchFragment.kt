@@ -1,6 +1,7 @@
 package com.dsm.ui.fragment
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -60,9 +61,14 @@ class SearchFragment : Fragment() , CoroutineScope {
                 (context as MainNavigation).loadSearchItem(binding.rvSearchItems);
                 (context as MainNavigation).loadColor(binding.rvSearchColor);
                 (context as MainNavigation).loadCut(binding.rvCut);
-                (context as MainNavigation).loadCut(binding.rvPol);
-                (context as MainNavigation).loadCut(binding.rvSym);
+                (context as MainNavigation).loadPol(binding.rvPol);
+                (context as MainNavigation).loadSym(binding.rvSym);
                 (context as MainNavigation).loadClarity(binding.rvClarity);
+                if(TextUtils.isEmpty(binding.edtSearch.text)){
+                    (context as MainNavigation).searchEditext = ""
+                }else{
+                        (context as MainNavigation).searchEditext = binding.edtSearch.text.toString()
+                }
 
                 binding.btnApply.setOnClickListener {
                     //     var search = if((context as MainNavigation).searchList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).searchList) +"]"
