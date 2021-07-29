@@ -19,6 +19,9 @@ class DiamondParser : BaseModel() {
         @SerializedName("user")
         lateinit var userModel: UserModel
 
+        @SerializedName("lookup_data")
+        lateinit var lookUpData : lookUpData
+
     }
     class DiamondList{
 
@@ -38,6 +41,17 @@ class DiamondParser : BaseModel() {
         @SerializedName("data")
         var data: List<DiamondModel> = emptyList()
 
+
+
     }
 
+    class lookUpData{
+
+        @SerializedName("labs")
+        var labsList :List<labModel> = emptyList()
+
+        @SerializedName("offices")
+        var offices :List<officeModel> = emptyList()
+
+    }
 }

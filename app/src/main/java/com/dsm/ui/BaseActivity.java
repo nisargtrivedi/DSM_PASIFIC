@@ -28,7 +28,10 @@ import com.dsm.R;
 import com.dsm.ui.adapter.SearchItemAdapter;
 import com.dsm.ui.listener.onSearchItemClick;
 import com.dsm.ui.model.SearchItemModel;
+import com.dsm.ui.util.MailCredentials;
+import com.dsm.ui.util.MailSender;
 import com.dsm.ui.util.ProgressD;
+import com.google.android.material.button.MaterialButton;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -106,7 +109,7 @@ public class BaseActivity extends AppCompatActivity {
         alert11.getWindow().setAttributes(layoutParams);
     }
 
-    public void openDialog(){
+    public void openDialog(String msg){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.email_dialog,null,false);
         builder1.setView(view);
@@ -116,6 +119,27 @@ public class BaseActivity extends AppCompatActivity {
         alert11.show();
         TextView btnClose = view.findViewById(R.id.btnClose);
         TextView tvCheck = view.findViewById(R.id.tvCheck);
+        MaterialButton btnSend=view.findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("MESSAGE-->"+msg);
+                        MailSender mailSender=new MailSender(MailCredentials.INSTANCE.getMAIL(), MailCredentials.INSTANCE.getPASSWORD());
+                        try {
+                            mailSender.sendMail("Hello",MailCredentials.INSTANCE.EmailTemplate("nisarg",msg,"Hello Test").toString(),MailCredentials.INSTANCE.getMAIL(),"nisarg.trivedi786@gmail.com");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+
+            }
+        });
         tvCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

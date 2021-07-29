@@ -25,6 +25,7 @@ import com.dsm.ui.listener.onSearchItemClick
 import com.dsm.ui.model.JewelleryCategoryModel
 import com.dsm.ui.model.NavMenuModel
 import com.dsm.ui.model.SearchItemModel
+import com.dsm.ui.model.labModel
 
 
 class MainNavigation : BaseActivity() {
@@ -39,9 +40,11 @@ class MainNavigation : BaseActivity() {
     var polList:MutableList<String> = mutableListOf()
     var symList:MutableList<String> = mutableListOf()
 
+    var labsList:MutableList<labModel> = mutableListOf()
+
 
     var searchEditext = ""
-
+    var lab = ""
     var categortList : ArrayList<JewelleryCategoryModel> = ArrayList()
     var selectedPosition = -1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,61 +152,45 @@ class MainNavigation : BaseActivity() {
     }
 
     fun subCategoryFragment(categoryID:JewelleryCategoryModel) {
-        var fragment: Fragment? = null
+        var fragment: Fragment?
             fragment = JewellerySubCategoryFragment.newInstance(categoryID)
             setTitle(resources.getString(R.string.jewellery_text))
-        if (fragment != null) {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).addToBackStack("SubCat").commit()
-            //setTitle(mNavigationDrawerItemTitles.get(position))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            Log.e("MainActivity", "Error in creating fragment")
-        }
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).addToBackStack("SubCat").commit()
+        //setTitle(mNavigationDrawerItemTitles.get(position))
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     fun jewelleryListFragment(subcategoryID:JewelleryCategoryModel) {
-        var fragment: Fragment? = null
+        var fragment: Fragment?
         fragment = JewelleryListFragment.newInstance(subcategoryID)
         setTitle(resources.getString(R.string.jewellery_text))
-        if (fragment != null) {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).addToBackStack("list").commit()
-            //setTitle(mNavigationDrawerItemTitles.get(position))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            Log.e("MainActivity", "Error in creating fragment")
-        }
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).addToBackStack("list").commit()
+        //setTitle(mNavigationDrawerItemTitles.get(position))
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     fun jewelleryCategoryFragment() {
-        var fragment: Fragment? = null
+        var fragment: Fragment?
         fragment = JewelleryFragment.newInstance()
         setTitle(resources.getString(R.string.jewellery_text))
-        if (fragment != null) {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment)
-                .commit()
-            //setTitle(mNavigationDrawerItemTitles.get(position))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            Log.e("MainActivity", "Error in creating fragment")
-        }
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment)
+            .commit()
+        //setTitle(mNavigationDrawerItemTitles.get(position))
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     fun searchFragment() {
-        var fragment: Fragment? = null
+        var fragment: Fragment?
         fragment = SearchFragment.newInstance()
         setTitle(resources.getString(R.string.toolbar_text))
-        if (fragment != null) {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).commit()
-            //setTitle(mNavigationDrawerItemTitles.get(position))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            Log.e("MainActivity", "Error in creating fragment")
-        }
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).commit()
+        //setTitle(mNavigationDrawerItemTitles.get(position))
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     override fun onBackPressed() {
@@ -227,7 +214,7 @@ class MainNavigation : BaseActivity() {
                 .setMessage("Are you sure you want to exit from application?")
                 .setCancelable(false)
                 .setPositiveButton("Yes",
-                    DialogInterface.OnClickListener { dialog, id ->
+                    DialogInterface.OnClickListener { _, _ ->
                         run {
                             finishAffinity()
                             super.onBackPressed()

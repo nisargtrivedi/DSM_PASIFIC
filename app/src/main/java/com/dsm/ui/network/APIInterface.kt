@@ -33,7 +33,10 @@ interface APIInterface {
         @Field("srch_lab") srch_lab:String?,
         @Field("srch_dia_clr") srch_dia_clr:String?,
         @Field("srch_dia_cla") srch_dia_cla:String?,
-        @Field("srch_price") srch_price:String?
+        @Field("srch_price") srch_price:String?,
+        @Field("srch_dia_fcut") srch_dia_fcut:String?,
+        @Field("srch_dia_pol") srch_dia_pol:String?,
+        @Field("srch_dia_sym") srch_dia_sym:String?
         ) : DiamondParser
 
     //End Diamond

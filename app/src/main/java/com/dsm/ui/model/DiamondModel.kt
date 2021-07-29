@@ -87,4 +87,6 @@ class DiamondModel : Serializable{
     @SerializedName("certificate_link")
     var certificate_link : String = ""
 
+    var isCheched : Int = 0
+
 }

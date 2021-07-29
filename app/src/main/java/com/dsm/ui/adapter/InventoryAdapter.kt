@@ -16,8 +16,10 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.dsm.R
 import com.dsm.ui.listener.onDialogClick
+import com.dsm.ui.listener.onJwelleryClick
 import com.dsm.ui.model.DiamondModel
 import com.dsm.ui.model.PermissionModel
+import com.dsm.ui.util.onDiamondClick
 
 
 class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
@@ -26,6 +28,13 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
     var usersList: List<DiamondModel>
     var context:Context
     lateinit var permissionModel: PermissionModel
+
+    lateinit var onDiamond: onDiamondClick
+
+    public fun onClick(open: onDiamondClick){
+        this.onDiamond = open
+    }
+
     init {
         this.context =context
         this.usersList= usersList
@@ -91,31 +100,19 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         holder.llImage.setOnClickListener {
             openDialog.onDialogOpen(task)
         }
-//        holder.chk.setOnClickListener {
-//            if (task.isCheched == 1)
-//                task.isCheched = 0
-//            else
-//                task.isCheched = 1
-//
-//            if (task.isCheched == 1) {
-//                holder.chk.post {
-//                    holder.chk.setImageResource(R.drawable.ic_check)
-//                }
-//            } else {
-//                holder.chk.post {
-//                    holder.chk.setImageResource(R.drawable.blue_border)
-//                }
-//            }
-//        }
-//        if(task.isCheched==1){
-//            holder.chk.post {
-//                holder.chk.setImageResource(R.drawable.ic_check)
-//            }
-//        }else{
-//            holder.chk.post {
-//                holder.chk.setImageResource(R.drawable.blue_border)
-//            }
-//        }
+
+        holder.chk.setOnClickListener {
+            onDiamond.onClick(task)
+        }
+        if(task.isCheched==1){
+            holder.chk.post {
+                holder.chk.setImageResource(R.drawable.ic_check)
+            }
+        }else{
+            holder.chk.post {
+                holder.chk.setImageResource(R.drawable.blue_border)
+            }
+        }
         holder.tvShape.setText(task.diamond_shape)
         holder.tvCarat.setText(task.diamond_size)
         holder.tvColor.setText(task.diamond_clr)
