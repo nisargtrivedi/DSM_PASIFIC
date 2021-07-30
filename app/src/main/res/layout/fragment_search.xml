@@ -188,6 +188,7 @@
                                 android:layout_height="@dimen/_20sdp">
                             </ImageView>
                             <EditText
+                                android:id="@+id/edtFromCarat"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_8ssp"
                                 android:inputType="numberDecimal"
@@ -208,6 +209,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"></TextView>
                             <EditText
+                                android:id="@+id/edtToCarat"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_8ssp"
                                 android:inputType="numberDecimal"
@@ -292,6 +294,7 @@
                                 android:layout_height="@dimen/_20sdp">
                             </ImageView>
                             <EditText
+                                android:id="@+id/edtFromPrice"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_8ssp"
                                 android:inputType="numberDecimal"
@@ -312,6 +315,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"></TextView>
                             <EditText
+                                android:id="@+id/edtToPrice"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_8ssp"
                                 android:inputType="numberDecimal"

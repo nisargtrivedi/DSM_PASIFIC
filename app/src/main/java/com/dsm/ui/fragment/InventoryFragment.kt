@@ -27,6 +27,7 @@ import com.dsm.ui.listener.onPriceLinkClick
 import com.dsm.ui.model.DiamondModel
 import com.dsm.ui.model.ShapeModel
 import com.dsm.ui.network.RetrofitBuilder
+import com.dsm.ui.util.AppPreferences
 import com.dsm.ui.util.MailCredentials.EmailTemplate
 import com.dsm.ui.util.MailCredentials.MAIL
 import com.dsm.ui.util.MailCredentials.PASSWORD
@@ -59,6 +60,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     lateinit var mailViewModel: SendMailViewModel
     private lateinit var layoutManager : LinearLayoutManager
 
+    lateinit var preferences: AppPreferences
     var selecteddiamondlistforenquiry:MutableList<String> = mutableListOf()
 
     // context for io thread
@@ -80,6 +82,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preferences= AppPreferences(activity)
         job = Job()
         loadData()
         onFloatingButtonClick()
@@ -225,10 +228,13 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         var edtSearch =  if((context as MainNavigation).searchEditext.isNullOrEmpty()) null else (context as MainNavigation).searchEditext
         var searchLab =  if((context as MainNavigation).lab.isNullOrEmpty()) null else (context as MainNavigation).lab
 
+        var srchCarat = if((context as MainNavigation).edtCaratList.isNullOrEmpty()) null else android.text.TextUtils.join(",", (context as MainNavigation).edtCaratList)
+        var srchPrice = if((context as MainNavigation).edtPriceList.isNullOrEmpty()) null else android.text.TextUtils.join(",", (context as MainNavigation).edtPriceList)
+
 
         var diamondViewModel  = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
         pageNo++
-        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com", shape, pageNo, edtSearch, null, null, search, searchLab, clr, dia, null, cut, pol, sym).observe(requireActivity(), {
+        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com", shape, pageNo, edtSearch, srchCarat, null, search, searchLab, clr, dia, srchPrice, cut, pol, sym).observe(requireActivity(), {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {
@@ -254,6 +260,11 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                                     }
                                     isLoading = false
                                     inventoryAdapter.notifyDataSetChanged()
+                                    binding.tvMsg.visibility = View.GONE
+                                    binding.rvInventory.visibility = View.VISIBLE
+                                }else{
+                                    binding.tvMsg.visibility = View.VISIBLE
+                                    binding.rvInventory.visibility = View.GONE
                                 }
                             }
                         }
@@ -373,9 +384,10 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         })
     }
 
+
     private fun showPriceLink(obj:DiamondModel){
         var diamondViewModel  = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
-        diamondViewModel.getPrice("harsh.shah@siimteq.com","harsh.shah@siimteq.com",obj.location,obj.diamond_id.toString()).observe(requireActivity(), {
+        diamondViewModel.getPrice(preferences.getString("ACCESS_TOKEN"),"harsh.shah@siimteq.com",obj.location,obj.diamond_id.toString()).observe(requireActivity(), {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {

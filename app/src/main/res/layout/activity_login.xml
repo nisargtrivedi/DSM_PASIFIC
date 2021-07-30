@@ -36,7 +36,10 @@
         android:layout_height="wrap_content"></TextView>
 
     <androidx.appcompat.widget.AppCompatEditText
+        android:textSize="@dimen/_12ssp"
+        android:text="nisarg.trivedi1192@gmail.com"
         android:singleLine="true"
+        android:inputType="textEmailAddress"
         android:fontFamily="@font/mon_regular"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_20sdp"
@@ -51,7 +54,10 @@
 
     </androidx.appcompat.widget.AppCompatEditText>
     <androidx.appcompat.widget.AppCompatEditText
+        android:textSize="@dimen/_12ssp"
+        android:text="Nisarg@1192"
         android:singleLine="true"
+        android:inputType="textPassword"
         android:fontFamily="@font/mon_regular"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_20sdp"
@@ -79,6 +85,7 @@
         android:backgroundTint="@color/button_color"
         android:layout_height="@dimen/_45sdp"></com.google.android.material.button.MaterialButton>
 <TextView
+    android:id="@+id/forgotPassword"
     android:textSize="@dimen/_11ssp"
     android:layout_marginTop="@dimen/_5sdp"
     android:fontFamily="@font/mon_light"

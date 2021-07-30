@@ -78,9 +78,12 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                     (context as MainNavigation).cutList.clear()
                     (context as MainNavigation).polList.clear()
                     (context as MainNavigation).symList.clear()
-
+                    (context as MainNavigation).edtCaratList.clear()
+                    (context as MainNavigation).edtPriceList.clear()
                     (context as MainNavigation).searchEditext = ""
                     (context as MainNavigation).selectItem(10)
+
+
                 }
 
                 (context as MainNavigation).loadSearchItem(binding.rvSearchItems);
@@ -101,13 +104,20 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                 binding.btnApply.setOnClickListener {
                     //     var search = if((context as MainNavigation).searchList.isNullOrEmpty()) null else "[" + android.text.TextUtils.join(",", (context as MainNavigation).searchList) +"]"
                     (context as MainNavigation).selectItem(10)
-                    if(TextUtils.isEmpty(binding.edtSearch.text)){
+                    if (TextUtils.isEmpty(binding.edtSearch.text)) {
                         (context as MainNavigation).searchEditext = ""
-                    }else{
+                    } else {
                         (context as MainNavigation).searchEditext = binding.edtSearch.text.toString()
                     }
+                    if (!TextUtils.isEmpty(binding.edtFromCarat.text) && !TextUtils.isEmpty(binding.edtToCarat.text)) {
+                        (context as MainNavigation).edtCaratList.add(binding.edtFromCarat.text.toString())
+                        (context as MainNavigation).edtCaratList.add(binding.edtToCarat.text.toString())
+                    }
+                    if (!TextUtils.isEmpty(binding.edtFromPrice.text) && !TextUtils.isEmpty(binding.edtToPrice.text)) {
+                        (context as MainNavigation).edtPriceList.add(binding.edtFromPrice.text.toString())
+                        (context as MainNavigation).edtPriceList.add(binding.edtToPrice.text.toString())
+                    }
                 }
-
 
                 binding.spLabs.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

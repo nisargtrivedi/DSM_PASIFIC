@@ -54,7 +54,11 @@ class DetailActivity : BaseActivity() , CoroutineScope {
 
     var id="0"
 
-
+    var pName="N/A"
+    var pmodelNo="N/A"
+    var pmetal="N/A"
+    var pdesc="N/A"
+    var pprice="N/A"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_item_details)
@@ -97,6 +101,13 @@ class DetailActivity : BaseActivity() , CoroutineScope {
 
                                             if (resource.data.list.jObj != null) {
                                                 id= obj.jewelleryID.toString()
+
+                                                pName =  resource.data.list.jObj!!.jewelleryfrontproductname
+                                                pdesc =  resource.data.list.jObj!!.jewellery_description
+                                                pmetal = resource.data.list.jObj!!.jewellery_metal
+                                                pmodelNo = resource.data.list.jObj!!.jewelleryLotNo
+                                                pprice = resource.data.list.jObj!!.jewellery_price
+
                                                 binding.tvmodelNo.text = "Lot No :"
                                                 binding.llMetal.visibility = View.GONE
                                                 binding.spMetals.visibility = View.GONE
@@ -122,11 +133,11 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                     resource.data.list.jObj!!.jewellery_price
 
                                                 if (!resource.data.list.jObj!!.image.isNullOrEmpty()) {
-                                                    Glide.with(DetailActivity@ this)
+                                                    Glide.with(this)
                                                         .load(resource.data.list.jObj!!.image)
                                                         .into(binding.img);
                                                 } else {
-                                                    Glide.with(DetailActivity@ this)
+                                                    Glide.with(this)
                                                         .load(R.drawable.noimage)
                                                         .into(binding.img);
                                                 }
@@ -154,7 +165,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                         it?.let { resource ->
                             when (resource.status) {
                                 Status.LOADING -> {
-                                    showLoading(DetailActivity@ this)
+                                    showLoading(this)
                                 }
                                 Status.SUCCESS -> {
                                     hideLoading()
@@ -174,6 +185,9 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 binding.llWeight.visibility = View.GONE
 
                                                 id= objModel.dataID.toString()
+
+
+
                                                 binding.tvJewelleryName.text =
                                                     resource.data.list.listModel!!.jewelleryfrontproductname
                                                 binding.tvCarat.text =
@@ -192,7 +206,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                     resource.data.list.listModel!!.jewellery_price
 
                                                 imagesList.clear()
-                                                imagesList.addAll( resource.data.list.listModel!!.images!!)
+                                                imagesList.addAll(resource.data.list.listModel!!.images)
 
                                                 binding.rlImages.visibility = View.VISIBLE
                                                 binding.img.visibility = View.GONE
@@ -205,7 +219,9 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 )
                                                 binding.rlImages.adapter = imagesAdapter
 
-                                                metalAdapter = ModelAdapter(this@DetailActivity,resource.data!!.list!!.listModel!!.metalsList!!)
+                                                metalAdapter = ModelAdapter(this@DetailActivity,
+                                                    resource.data.list.listModel!!.metalsList
+                                                )
                                                 binding.spMetals.adapter = metalAdapter
 
                                                 binding.spMetals.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -217,9 +233,9 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                     ) {
                                                         var metal : JewelleryModel.Metals = parent!!.getItemAtPosition(position) as JewelleryModel.Metals
                                                             for(i in 0..imagesList.size){
-                                                                if(metal.metalID==imagesList!!.get(i).attribute_id){
+                                                                if(metal.metalID== imagesList.get(i).attribute_id){
                                                                     images.clear()
-                                                                    images.addAll(imagesList!!.get(i).images)
+                                                                    images.addAll(imagesList.get(i).images)
                                                                     imagesAdapter.notifyDataSetChanged()
                                                                     break
                                                                 }
@@ -231,6 +247,12 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                     }
 
                                                 }
+                                                pName =  resource.data.list.listModel!!.jewelleryfrontproductname
+                                                pdesc =  resource.data.list.listModel!!.jewellery_description
+                                                pmetal = binding.spMetals.selectedItem.toString()
+                                                pmodelNo = resource.data.list.listModel!!.jewelleryLotNo
+                                                pprice = resource.data.list.listModel!!.jewellery_price
+
 
 
 //                                                if (!resource.data.list.listModel!!.image.isNullOrEmpty()) {
@@ -264,10 +286,10 @@ class DetailActivity : BaseActivity() , CoroutineScope {
     }
     private fun btnClick(){
         binding.btnEnquiry.setOnClickListener {
-
+            Dialog()
         }
     }
-    private fun Dialog(msg: String) {
+    private fun Dialog() {
 
         val builder1 = AlertDialog.Builder(this)
         val view = LayoutInflater.from(this).inflate(R.layout.email_dialog, null, false)
@@ -312,10 +334,12 @@ class DetailActivity : BaseActivity() , CoroutineScope {
     }
 
     private fun sendMailAPI(email:String,message:String){
+
+
         mailViewModel= ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(
             SendMailViewModel::class.java)
-        mailViewModel.sendJewelleryMail(email=email,"","","",""
-        ,"",message).observe(this, Observer {
+        mailViewModel.sendJewelleryMail(email=email,pName,pmodelNo,pmetal,pdesc
+        ,pprice,message).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {

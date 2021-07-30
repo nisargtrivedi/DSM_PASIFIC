@@ -40,6 +40,10 @@ class MainNavigation : BaseActivity() {
     var polList:MutableList<String> = mutableListOf()
     var symList:MutableList<String> = mutableListOf()
 
+    var edtCaratList:MutableList<String> = mutableListOf()
+    var edtPriceList:MutableList<String> = mutableListOf()
+
+
     var labsList:MutableList<labModel> = mutableListOf()
 
 
