@@ -52,6 +52,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     private lateinit var job: Job
     lateinit var shapeViewModel: ShapeViewModel
     private lateinit var layoutManager : LinearLayoutManager
+    var data: StringBuilder = java.lang.StringBuilder()
     // context for io thread
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
@@ -97,7 +98,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
                 inventoryAdapter.DialogOpen(object : onDialogClick {
                     override fun onDialogOpen(obj: DiamondModel) {
-                        (context as MainNavigation).openSelectedImageDialog(obj.diamond_img_path, obj.diamond_lot_no)
+                        (context as MainNavigation).openSelectedImageDialog(obj.diamond_img_path, obj.diamond_lot_no + "-"+ obj.diamond_clr +"-"+obj.diamond_cla+"-"+obj.diamond_size)
                     }
                 })
 
@@ -119,9 +120,11 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                     override fun onClick(task: DiamondModel) {
                         if (task.isCheched == 1)
                             task.isCheched = 0
-                        else
+                        else {
                             task.isCheched = 1
+                        }
                         inventoryAdapter.notifyDataSetChanged()
+                        sendDiamondsEnquiry(task)
                     }
 
                 })
@@ -153,7 +156,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     private fun onSendEmail(){
         binding.tvDiamongEnquiry.setOnClickListener {
           //  (context as MainNavigation).openDialog(sendDiamondsEnquiry().toString())
-            openDialog(sendDiamondsEnquiry().toString())
+            openDialog(data.toString())
         }
     }
 
@@ -279,35 +282,35 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         getDiamondFromShape(shapes[0].shapeID)
     }
 
-    fun sendDiamondsEnquiry(): String {
+    fun sendDiamondsEnquiry(diamondList:DiamondModel): String {
             var i = 0
-            var data: StringBuilder = java.lang.StringBuilder()
+
             data.append("<table border='1' width='100%'>")
             data.append("<tr><td>Lot No</td><td>Location</td><td>Carat</td><td>Lab</td><td>Certificate</td><td>Shape</td><td>CLR</td><td>CLA</td><td>FLR</td><td>FCUT</td><td>POL</td><td>SYM</td><td>TAB</td><td>DEP</td><td>Measurement</td><td>STATUS</td><td>SELLING PRICE</td></tr>")
 
-            for (i in 0..diamondList.size - 1 ) {
-                if (diamondList[i].isCheched == 1) {
+
+                if (diamondList.isCheched == 1) {
                     data.append("<tr>")
-                    data.append("<td>" + diamondList[i].diamond_lot_no + "</td>")
-                    data.append("<td>" + diamondList[i].location + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_size + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_lab + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_cert + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_shape + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_clr + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_cla + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_flr + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_fcut + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_pol + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_sym + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_tab + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_dep + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_meas1 + "x" + diamondList[i].diamond_meas2 + "x" + diamondList[i].diamond_meas3 + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_status + "</td>")
-                    data.append("<td>" + diamondList[i].diamond_selling_price + "</td>")
+                    data.append("<td>" + diamondList.diamond_lot_no + "</td>")
+                    data.append("<td>" + diamondList.location + "</td>")
+                    data.append("<td>" + diamondList.diamond_size + "</td>")
+                    data.append("<td>" + diamondList.diamond_lab + "</td>")
+                    data.append("<td>" + diamondList.diamond_cert + "</td>")
+                    data.append("<td>" + diamondList.diamond_shape + "</td>")
+                    data.append("<td>" + diamondList.diamond_clr + "</td>")
+                    data.append("<td>" + diamondList.diamond_cla + "</td>")
+                    data.append("<td>" + diamondList.diamond_flr + "</td>")
+                    data.append("<td>" + diamondList.diamond_fcut + "</td>")
+                    data.append("<td>" + diamondList.diamond_pol + "</td>")
+                    data.append("<td>" + diamondList.diamond_sym + "</td>")
+                    data.append("<td>" + diamondList.diamond_tab + "</td>")
+                    data.append("<td>" + diamondList.diamond_dep + "</td>")
+                    data.append("<td>" + diamondList.diamond_meas1 + "x" + diamondList.diamond_meas2 + "x" + diamondList.diamond_meas3 + "</td>")
+                    data.append("<td>" + diamondList.diamond_status + "</td>")
+                    data.append("<td>" + diamondList.diamond_selling_price + "</td>")
                     data.append("</tr>")
                 }
-            }
+
             data.append("</table>")
 
             return data.toString()+"<br>"
