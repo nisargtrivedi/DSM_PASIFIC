@@ -17,17 +17,19 @@ class SelectPortalActivity : BaseActivity() {
             startActivity(
                     Intent(this,MainNavigation::class.java)
                         .putExtra("portal","d")
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             )
+            overridePendingTransition(R.anim.slide_right, R.anim.noanim);
         }
         binding.tvDiamond.setOnClickListener {
             finish()
             startActivity(
                     Intent(this,MainNavigation::class.java)
                         .putExtra("portal","d")
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
+            overridePendingTransition(R.anim.slide_right, R.anim.noanim);
         }
 
         binding.imgJewellery.setOnClickListener {
@@ -35,17 +37,19 @@ class SelectPortalActivity : BaseActivity() {
             startActivity(
                 Intent(this,MainNavigation::class.java)
                     .putExtra("portal","j")
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             )
+            overridePendingTransition(R.anim.slide_right, R.anim.noanim);
         }
         binding.tvJewellery.setOnClickListener {
-            //finish()
+            finish()
             startActivity(
                 Intent(this,MainNavigation::class.java)
                     .putExtra("portal","j")
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
+            overridePendingTransition(R.anim.slide_right, R.anim.noanim);
         }
 
 

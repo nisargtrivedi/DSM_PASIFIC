@@ -373,6 +373,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:backgroundTint="@color/white"
                         app:cornerRadius="0dp"
+                        android:id="@+id/btnEnquiry"
                         app:rippleColor="@color/navigation_color"
                         android:layout_gravity="right"
                         android:textAllCaps="false"

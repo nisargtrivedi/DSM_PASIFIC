@@ -1,12 +1,16 @@
 package com.dsm.ui
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +30,9 @@ import com.dsm.ui.network.RetrofitBuilder
 import com.dsm.ui.util.Status
 import com.dsm.ui.viewmodel.JewelleryDetailViewModel
 import com.dsm.ui.viewmodel.JewelleryListViewModel
+import com.dsm.ui.viewmodel.SendMailViewModel
 import com.dsm.ui.viewmodel.ViewModelFactory
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -39,13 +45,14 @@ class DetailActivity : BaseActivity() , CoroutineScope {
 
     var imagesList: ArrayList<JewelleryModel.Images> = ArrayList()
     var images: ArrayList<String> = ArrayList()
-
+    lateinit var mailViewModel: SendMailViewModel
     lateinit var imagesAdapter: DetailImageAdapter
     lateinit var metalAdapter: ModelAdapter
     // context for io thread
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
 
+    var id="0"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +61,9 @@ class DetailActivity : BaseActivity() , CoroutineScope {
         job = Job()
         setupToolbar()
         loadData()
+        btnClick()
     }
-    fun setupToolbar() {
+    private fun setupToolbar() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -88,7 +96,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                         if (resource.data.list.isJewellery) {
 
                                             if (resource.data.list.jObj != null) {
-
+                                                id= obj.jewelleryID.toString()
                                                 binding.tvmodelNo.text = "Lot No :"
                                                 binding.llMetal.visibility = View.GONE
                                                 binding.spMetals.visibility = View.GONE
@@ -165,6 +173,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 binding.llTDW.visibility = View.GONE
                                                 binding.llWeight.visibility = View.GONE
 
+                                                id= objModel.dataID.toString()
                                                 binding.tvJewelleryName.text =
                                                     resource.data.list.listModel!!.jewelleryfrontproductname
                                                 binding.tvCarat.text =
@@ -253,5 +262,83 @@ class DetailActivity : BaseActivity() , CoroutineScope {
             showToast("Details not fetching properly")
         }
     }
+    private fun btnClick(){
+        binding.btnEnquiry.setOnClickListener {
 
+        }
+    }
+    private fun Dialog(msg: String) {
+
+        val builder1 = AlertDialog.Builder(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.email_dialog, null, false)
+        builder1.setView(view)
+        builder1.setCancelable(true)
+        val alert11 = builder1.create()
+        alert11.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert11.show()
+        val btnClose = view.findViewById<TextView>(R.id.btnClose)
+        val tvCheck = view.findViewById<TextView>(R.id.tvCheck)
+        val edtEmail = view.findViewById<EditText>(R.id.edtEmail)
+        val edtMessage=view.findViewById<AppCompatEditText>(R.id.edtMessage)
+        val btnSend: MaterialButton = view.findViewById(R.id.btnSend)
+        btnSend.setOnClickListener {
+
+            when {
+                TextUtils.isEmpty(edtEmail.text.toString()) -> {
+                   showToast("Please enter email")
+                }
+                TextUtils.isEmpty(edtMessage.text.toString()) -> {
+                    showToast("Please enter message")
+                }
+                else -> {
+                    sendMailAPI(edtEmail.text.toString(),
+                    edtMessage.text.toString())
+                }
+            }
+        }
+        tvCheck.setOnClickListener {
+            onCheck = if (onCheck) {
+                tvCheck.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_rectangle, 0, 0, 0)
+                false
+            } else {
+                tvCheck.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_chk, 0, 0, 0)
+                true
+            }
+        }
+        btnClose.setOnClickListener {
+            alert11.cancel()
+            alert11.dismiss()
+        }
+    }
+
+    private fun sendMailAPI(email:String,message:String){
+        mailViewModel= ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(
+            SendMailViewModel::class.java)
+        mailViewModel.sendJewelleryMail(email=email,"","","",""
+        ,"",message).observe(this, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.LOADING -> {
+                        showLoading(this)
+                    }
+                    Status.SUCCESS -> {
+                        hideLoading()
+                        if (resource.data!!.ResponseStatus == 200) {
+                           showToast(resource.message)
+                        }else{
+                            showToast(resource.message)
+                        }
+                    }
+                    Status.ERROR -> {
+                        hideLoading()
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
+    }
 }

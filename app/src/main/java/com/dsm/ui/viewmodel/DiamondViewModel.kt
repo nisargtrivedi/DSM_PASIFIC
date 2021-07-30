@@ -31,4 +31,23 @@ class DiamondViewModel(private val diamondRepo: DiamondRepo) : ViewModel() {
         }
     }
 
+    fun getPrice(
+        session_id:String,
+        email_id:String,
+        company_name:String,
+        diamond_id:String
+    ) = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = diamondRepo.getDiamondPrice(session_id,
+                email_id,
+                company_name,
+                diamond_id)))
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+    }
+
+
+
 }

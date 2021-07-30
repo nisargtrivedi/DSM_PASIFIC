@@ -4,12 +4,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.StrictMode
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,7 @@ import com.dsm.databinding.FragmentInventoryBinding
 import com.dsm.ui.MainNavigation
 import com.dsm.ui.adapter.InventoryAdapter
 import com.dsm.ui.listener.onDialogClick
+import com.dsm.ui.listener.onPriceLinkClick
 import com.dsm.ui.model.DiamondModel
 import com.dsm.ui.model.ShapeModel
 import com.dsm.ui.network.RetrofitBuilder
@@ -30,6 +34,7 @@ import com.dsm.ui.util.MailSender
 import com.dsm.ui.util.Status
 import com.dsm.ui.util.onDiamondClick
 import com.dsm.ui.viewmodel.DiamondViewModel
+import com.dsm.ui.viewmodel.SendMailViewModel
 import com.dsm.ui.viewmodel.ShapeViewModel
 import com.dsm.ui.viewmodel.ViewModelFactory
 import com.google.android.material.button.MaterialButton
@@ -51,8 +56,11 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     var currentPage=0
     private lateinit var job: Job
     lateinit var shapeViewModel: ShapeViewModel
+    lateinit var mailViewModel: SendMailViewModel
     private lateinit var layoutManager : LinearLayoutManager
-    var data: StringBuilder = java.lang.StringBuilder()
+
+    var selecteddiamondlistforenquiry:MutableList<String> = mutableListOf()
+
     // context for io thread
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
@@ -83,7 +91,6 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         binding.rvInventory.setHasFixedSize(true)
 
         launch {
-
             withContext(Dispatchers.Main) {
                 layoutManager = LinearLayoutManager(activity)
                 binding.rvInventory.layoutManager = layoutManager
@@ -99,6 +106,12 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                 inventoryAdapter.DialogOpen(object : onDialogClick {
                     override fun onDialogOpen(obj: DiamondModel) {
                         (context as MainNavigation).openSelectedImageDialog(obj.diamond_img_path, obj.diamond_lot_no + "-"+ obj.diamond_clr +"-"+obj.diamond_cla+"-"+obj.diamond_size)
+                    }
+                })
+                inventoryAdapter.onPriceClick(object :onPriceLinkClick{
+                    override fun onPriceLink(obj: DiamondModel) {
+                        showPriceLink(obj)
+
                     }
                 })
 
@@ -123,8 +136,12 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                         else {
                             task.isCheched = 1
                         }
+                        if(selecteddiamondlistforenquiry.contains(task.diamond_id)){
+                            selecteddiamondlistforenquiry.remove(task.diamond_id)
+                        }else{
+                            selecteddiamondlistforenquiry.add(task.diamond_id)
+                        }
                         inventoryAdapter.notifyDataSetChanged()
-                        sendDiamondsEnquiry(task)
                     }
 
                 })
@@ -155,8 +172,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     }
     private fun onSendEmail(){
         binding.tvDiamongEnquiry.setOnClickListener {
-          //  (context as MainNavigation).openDialog(sendDiamondsEnquiry().toString())
-            openDialog(data.toString())
+            openDialog(android.text.TextUtils.join(",", selecteddiamondlistforenquiry))
         }
     }
 
@@ -282,47 +298,13 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         getDiamondFromShape(shapes[0].shapeID)
     }
 
-    fun sendDiamondsEnquiry(diamondList:DiamondModel): String {
-            var i = 0
 
-            data.append("<table border='1' width='100%'>")
-            data.append("<tr><td>Lot No</td><td>Location</td><td>Carat</td><td>Lab</td><td>Certificate</td><td>Shape</td><td>CLR</td><td>CLA</td><td>FLR</td><td>FCUT</td><td>POL</td><td>SYM</td><td>TAB</td><td>DEP</td><td>Measurement</td><td>STATUS</td><td>SELLING PRICE</td></tr>")
-
-
-                if (diamondList.isCheched == 1) {
-                    data.append("<tr>")
-                    data.append("<td>" + diamondList.diamond_lot_no + "</td>")
-                    data.append("<td>" + diamondList.location + "</td>")
-                    data.append("<td>" + diamondList.diamond_size + "</td>")
-                    data.append("<td>" + diamondList.diamond_lab + "</td>")
-                    data.append("<td>" + diamondList.diamond_cert + "</td>")
-                    data.append("<td>" + diamondList.diamond_shape + "</td>")
-                    data.append("<td>" + diamondList.diamond_clr + "</td>")
-                    data.append("<td>" + diamondList.diamond_cla + "</td>")
-                    data.append("<td>" + diamondList.diamond_flr + "</td>")
-                    data.append("<td>" + diamondList.diamond_fcut + "</td>")
-                    data.append("<td>" + diamondList.diamond_pol + "</td>")
-                    data.append("<td>" + diamondList.diamond_sym + "</td>")
-                    data.append("<td>" + diamondList.diamond_tab + "</td>")
-                    data.append("<td>" + diamondList.diamond_dep + "</td>")
-                    data.append("<td>" + diamondList.diamond_meas1 + "x" + diamondList.diamond_meas2 + "x" + diamondList.diamond_meas3 + "</td>")
-                    data.append("<td>" + diamondList.diamond_status + "</td>")
-                    data.append("<td>" + diamondList.diamond_selling_price + "</td>")
-                    data.append("</tr>")
-                }
-
-            data.append("</table>")
-
-            return data.toString()+"<br>"
-        }
 
     var onCheck = true
-    fun openDialog(msg: String) {
+    private fun openDialog(msg: String) {
 
-
-
-                val builder1 = AlertDialog.Builder(activity!!)
-                val view = LayoutInflater.from(activity!!).inflate(R.layout.email_dialog, null, false)
+                val builder1 = AlertDialog.Builder(requireActivity())
+                val view = LayoutInflater.from(requireActivity()).inflate(R.layout.email_dialog, null, false)
                 builder1.setView(view)
                 builder1.setCancelable(true)
                 val alert11 = builder1.create()
@@ -331,49 +313,119 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                 val btnClose = view.findViewById<TextView>(R.id.btnClose)
                 val tvCheck = view.findViewById<TextView>(R.id.tvCheck)
                 val edtEmail = view.findViewById<EditText>(R.id.edtEmail)
+                val edtMessage=view.findViewById<AppCompatEditText>(R.id.edtMessage)
                 val btnSend: MaterialButton = view.findViewById(R.id.btnSend)
                 btnSend.setOnClickListener {
-                    //println("MESSAGE-->$msg--------------")
 
-                    val policy = StrictMode.ThreadPolicy.Builder()
-                            .permitAll().build()
-                    StrictMode.setThreadPolicy(policy)
-                        val mailSender = MailSender(MAIL, PASSWORD)
-                        try {
-                            mailSender.sendMail("Request from quote on DSM Pasific", EmailTemplate("nisarg", msg.toString(), ""), MAIL, edtEmail.text.toString())
-                        } catch (e: java.lang.Exception) {
-                            e.printStackTrace()
+                    when {
+                        TextUtils.isEmpty(edtEmail.text.toString()) -> {
+                            (context as MainNavigation).showToast("Please enter email")
                         }
+                        TextUtils.isEmpty(edtMessage.text.toString()) -> {
+                            (context as MainNavigation).showToast("Please enter message")
+                        }
+                        else -> {
+                            sendMailAPI(
+                                edtEmail.text.toString(),
+                                edtMessage.text.toString(),
+                                msg,
+                                if (onCheck) "Yes" else "No"
+                            )
+                        }
+                    }
                 }
                 tvCheck.setOnClickListener {
-                    if (onCheck) {
+                    onCheck = if (onCheck) {
                         tvCheck.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_rectangle, 0, 0, 0)
-                        onCheck = false
+                        false
                     } else {
                         tvCheck.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_chk, 0, 0, 0)
-                        onCheck = true
+                        true
                     }
                 }
                 btnClose.setOnClickListener {
                     alert11.cancel()
                     alert11.dismiss()
                 }
-
-
-                //Open Dialog with 50% width and height
-//        DisplayMetrics displayMetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//        int displayWidth = displayMetrics.widthPixels;
-//        int displayHeight = displayMetrics.heightPixels;
-//        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-//        layoutParams.copyFrom(alert11.getWindow().getAttributes());
-//        int dialogWindowWidth = (int) (displayWidth * 0.5f);
-//        int dialogWindowHeight = (int) (displayHeight * 0.5f);
-//        layoutParams.width = dialogWindowWidth;
-//        layoutParams.height = dialogWindowHeight;
-//        alert11.getWindow().setGravity(Gravity.CENTER);
-//        alert11.getWindow().setAttributes(layoutParams);
-
-
     }
+
+    private fun sendMailAPI(email:String,message:String,id:String,send:String){
+        mailViewModel= ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(SendMailViewModel::class.java)
+        mailViewModel.sendMail(email=email,message = message,enquiryID=id,send_me_also = send).observe(viewLifecycleOwner, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.LOADING -> {
+                        showLoading(activity)
+                    }
+                    Status.SUCCESS -> {
+                        hideLoading()
+                        if (resource.data!!.ResponseStatus == 200) {
+                            (context as MainNavigation).showToast(resource.message)
+                        }else{
+                            (context as MainNavigation).showToast(resource.message)
+                        }
+                    }
+                    Status.ERROR -> {
+                        hideLoading()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun showPriceLink(obj:DiamondModel){
+        var diamondViewModel  = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
+        diamondViewModel.getPrice("harsh.shah@siimteq.com","harsh.shah@siimteq.com",obj.location,obj.diamond_id.toString()).observe(requireActivity(), {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.LOADING -> {
+                        showLoading(activity)
+                    }
+                    Status.SUCCESS -> {
+                        hideLoading()
+                        if (resource.data!!.ResponseStatus == 200) {
+                                Log.e("CAlledddd-------------","----------------------")
+                        }
+                    }
+                    Status.ERROR -> {
+                        hideLoading()
+                    }
+                }
+            }
+        })
+    }
+//    Function for Send Mail From Android Application
+//    fun sendDiamondsEnquiry(diamondList:DiamondModel): String {
+//        var i = 0
+//
+//        data.append("<table border='1' width='100%'>")
+//        data.append("<tr><td>Lot No</td><td>Location</td><td>Carat</td><td>Lab</td><td>Certificate</td><td>Shape</td><td>CLR</td><td>CLA</td><td>FLR</td><td>FCUT</td><td>POL</td><td>SYM</td><td>TAB</td><td>DEP</td><td>Measurement</td><td>STATUS</td><td>SELLING PRICE</td></tr>")
+//
+//
+//        if (diamondList.isCheched == 1) {
+//            data.append("<tr>")
+//            data.append("<td>" + diamondList.diamond_lot_no + "</td>")
+//            data.append("<td>" + diamondList.location + "</td>")
+//            data.append("<td>" + diamondList.diamond_size + "</td>")
+//            data.append("<td>" + diamondList.diamond_lab + "</td>")
+//            data.append("<td>" + diamondList.diamond_cert + "</td>")
+//            data.append("<td>" + diamondList.diamond_shape + "</td>")
+//            data.append("<td>" + diamondList.diamond_clr + "</td>")
+//            data.append("<td>" + diamondList.diamond_cla + "</td>")
+//            data.append("<td>" + diamondList.diamond_flr + "</td>")
+//            data.append("<td>" + diamondList.diamond_fcut + "</td>")
+//            data.append("<td>" + diamondList.diamond_pol + "</td>")
+//            data.append("<td>" + diamondList.diamond_sym + "</td>")
+//            data.append("<td>" + diamondList.diamond_tab + "</td>")
+//            data.append("<td>" + diamondList.diamond_dep + "</td>")
+//            data.append("<td>" + diamondList.diamond_meas1 + "x" + diamondList.diamond_meas2 + "x" + diamondList.diamond_meas3 + "</td>")
+//            data.append("<td>" + diamondList.diamond_status + "</td>")
+//            data.append("<td>" + diamondList.diamond_selling_price + "</td>")
+//            data.append("</tr>")
+//        }
+//
+//        data.append("</table>")
+//
+//        return data.toString()+"<br>"
+//    }
 }
