@@ -1,5 +1,6 @@
 package com.dsm.ui
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -17,11 +18,9 @@ class MainActivity : BaseActivity() {
         binding.btnSignin.setOnClickListener {
             finish()
             startActivity(
-
                     Intent(this@MainActivity, SelectPortalActivity::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
             )
+            overridePendingTransition(R.anim.slide_right, R.anim.noanim);
         }
     }
 }

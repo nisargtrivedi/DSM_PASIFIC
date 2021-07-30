@@ -333,6 +333,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llCertyNo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -400,6 +401,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/llPPCT"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -430,6 +432,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llTotal"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

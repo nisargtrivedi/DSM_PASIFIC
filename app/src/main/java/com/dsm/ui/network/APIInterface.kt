@@ -80,4 +80,49 @@ interface APIInterface {
             @Header("x-api-key") xApiKey:String,
             @Query("jewellery_id") jID:String
     ) : JwelleryDetailParser
+
+
+    //Mail API
+    @FormUrlEncoded
+    @POST("enquiry")
+    suspend fun sendMail(
+        @Header("customer-key") customerKey : String,
+        @Header("customer-secret") customerSecret : String,
+        @Header("x-api-key") xApiKey:String,
+        @Field("email") email:String,
+        @Field("message") message:String,
+        @Field("enquiry_dia_ids") enquiryID:String,
+        @Field("send_me_also") send_me_also:String,
+        @Field("diamond_type") diamondType:String
+    ) : BaseModel
+
+    //Check Price Link
+    @FormUrlEncoded
+    @POST("save-history")
+    suspend fun checkPrice(
+        @Header("customer-key") customerKey : String,
+        @Header("customer-secret") customerSecret : String,
+        @Header("x-api-key") xApiKey:String,
+        @Field("session_id") session_id:String,
+        @Field("email_id") email_id:String,
+        @Field("company_name") company_name:String,
+        @Field("diamond_id") diamond_id:String
+    ) : BaseModel
+
+
+    //Jewellry Enquiry API
+    @FormUrlEncoded
+    @POST("jewellery-enquiry")
+    suspend fun jewelleryEnquiry(
+        @Header("customer-key") customerKey : String,
+        @Header("customer-secret") customerSecret : String,
+        @Header("x-api-key") xApiKey:String,
+        @Field("email") email:String,
+        @Field("product_name") product_name:String,
+        @Field("product_model_no") product_model_no:String,
+        @Field("product_metal") product_metal:String,
+        @Field("product_desc") product_desc:String,
+        @Field("product_price") product_price:String,
+        @Field("customer_msg") customer_msg:String,
+    ) : BaseModel
 }

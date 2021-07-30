@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dsm.R
 import com.dsm.ui.listener.onDialogClick
 import com.dsm.ui.listener.onJwelleryClick
+import com.dsm.ui.listener.onPriceLinkClick
 import com.dsm.ui.model.DiamondModel
 import com.dsm.ui.model.PermissionModel
 import com.dsm.ui.util.onDiamondClick
@@ -30,11 +32,15 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
     lateinit var permissionModel: PermissionModel
 
     lateinit var onDiamond: onDiamondClick
+    lateinit var onPriceList: onPriceLinkClick
 
     public fun onClick(open: onDiamondClick){
         this.onDiamond = open
     }
 
+    public fun onPriceClick(open: onPriceLinkClick){
+        this.onPriceList = open
+    }
     init {
         this.context =context
         this.usersList= usersList
@@ -45,48 +51,31 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         this.openDialog = open
     }
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var tvShape: TextView
-        var tvCarat : TextView
-        var tvColor: TextView
-        var tvClarity:TextView
+        var tvShape: TextView = view.findViewById(R.id.tvShape)
+        var tvCarat : TextView = view.findViewById(R.id.tvCarat)
+        var tvColor: TextView = view.findViewById(R.id.tvColor)
+        var tvClarity:TextView = view.findViewById(R.id.tvClarity)
 
-        var tvLBH:TextView
-        var tvCut:TextView
-        var tvFLR:TextView
-        var tvTable:TextView
-        var tvDepth:TextView
-        var tvGIA:TextView
+        var tvLBH:TextView = view.findViewById(R.id.tvLBH)
+        var tvCut:TextView = view.findViewById(R.id.tvCut)
+        var tvFLR:TextView = view.findViewById(R.id.tvFLR)
+        var tvTable:TextView = view.findViewById(R.id.tvTable)
+        var tvDepth:TextView = view.findViewById(R.id.tvDepth)
+        var tvGIA:TextView = view.findViewById(R.id.tvGIA)
 
-        var tvLot:TextView
-        var tvPPCT:TextView
-        var tvTotal:TextView
-        var tvINS:TextView
-        var chk: ImageView
-        var llImage:LinearLayout
-        var llStatus : LinearLayout
+        var tvLot:TextView = view.findViewById(R.id.tvLot)
+        var tvPPCT:TextView = view.findViewById(R.id.tvPPCT)
+        var tvTotal:TextView = view.findViewById(R.id.tvTotal)
+        var tvINS:TextView = view.findViewById(R.id.tvINS)
+        var chk: ImageView = view.findViewById(R.id.chk)
+        var llImage:LinearLayout = view.findViewById(R.id.llImage)
+        var llStatus : LinearLayout = view.findViewById(R.id.llStatus)
 
-        init {
-            tvShape = view.findViewById(R.id.tvShape)
-            tvCarat = view.findViewById(R.id.tvCarat)
-            tvColor = view.findViewById(R.id.tvColor)
-            tvClarity = view.findViewById(R.id.tvClarity)
+        var llPPCT : LinearLayout = view.findViewById(R.id.llPPCT)
+        var llTotal : LinearLayout = view.findViewById(R.id.llTotal)
+        var llCertyNo : LinearLayout = view.findViewById(R.id.llCertyNo)
 
-            tvCut = view.findViewById(R.id.tvCut)
-            tvLBH = view.findViewById(R.id.tvLBH)
 
-            tvFLR =view.findViewById(R.id.tvFLR)
-            tvTable =view.findViewById(R.id.tvTable)
-
-            tvDepth =view.findViewById(R.id.tvDepth)
-            tvGIA =view.findViewById(R.id.tvGIA)
-            tvLot =view.findViewById(R.id.tvLot)
-            tvPPCT =view.findViewById(R.id.tvPPCT)
-            tvTotal =view.findViewById(R.id.tvTotal)
-            tvINS =view.findViewById(R.id.tvINS)
-            chk = view.findViewById(R.id.chk)
-            llImage=view.findViewById(R.id.llImage)
-            llStatus=view.findViewById(R.id.llStatus)
-        }
     }
 
 
@@ -94,7 +83,7 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         holder: InventoryAdapter.ViewHolder,
         position: Int
     ) {
-        val task: DiamondModel = usersList.get(position)
+        val task: DiamondModel = usersList[position]
 
 
         holder.llImage.setOnClickListener {
@@ -122,15 +111,27 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         holder.tvFLR.setText(task.diamond_flr)
         holder.tvTable.setText(task.diamond_tab)
         holder.tvDepth.setText(task.diamond_dep)
-        holder.tvGIA.setText(task.diamond_cert)
 
-        holder.tvGIA.setOnClickListener {
+        holder.tvGIA.text = (if(!task.certificate_link.isNullOrEmpty()) Html.fromHtml("<u>"+task.diamond_cert+"</u>") else task.diamond_cert)
+
+        holder.llCertyNo.setOnClickListener {
             if(!task.certificate_link.isNullOrEmpty()) {
                 val url = task.certificate_link
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
                 i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(i)
+            }
+        }
+        holder.llPPCT.setOnClickListener {
+            if(permissionModel.show_pricelink) {
+                onPriceList.onPriceLink(task)
+            }
+        }
+
+        holder.llTotal.setOnClickListener {
+            if(permissionModel.show_pricelink) {
+                onPriceList.onPriceLink(task)
             }
         }
 
@@ -151,19 +152,18 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         }
         if(permissionModel.user_show_price){
             if(!permissionModel.show_price_aud){
-                holder.tvTotal.text = task.diamond_selling_price
-                holder.tvPPCT.text = task.perct_price
+                holder.tvTotal.text =  if(!permissionModel.show_pricelink) task.diamond_selling_price else  Html.fromHtml("<u>Price Link</u>")
+                holder.tvPPCT.text = if(!permissionModel.show_pricelink) task.perct_price else Html.fromHtml("<u>Price Link</u>")
             }else{
-                holder.tvTotal.text = task.diamond_price_sell_AUD
+                holder.tvTotal.text = if(!permissionModel.show_pricelink) task.diamond_price_sell_AUD else Html.fromHtml("<u>Price Link</u>")
                 holder.tvPPCT.text = "-"
             }
         }else{
             if(permissionModel.show_price_aud){
-                holder.tvTotal.text = task.diamond_selling_price
-                holder.tvPPCT.text = task.perct_price
+                holder.tvTotal.text = if(!permissionModel.show_pricelink) task.diamond_selling_price else Html.fromHtml("<u>Price Link</u>")
+                holder.tvPPCT.text = if(!permissionModel.show_pricelink) task.perct_price else Html.fromHtml("<u>Price Link</u>")
             }
         }
-
 
         holder.tvINS.text = task.diamond_status
 
