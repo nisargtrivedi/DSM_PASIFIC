@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.core.widget.NestedScrollView
     android:fillViewport="true"
     android:background="@color/app_back_color"
@@ -35,42 +35,70 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
 
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxCornerRadiusTopStart="@dimen/_25sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_25sdp"
+        app:boxCornerRadiusBottomEnd="@dimen/_25sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_25sdp"
+        app:startIconTint="@color/black"
+        app:startIconDrawable="@drawable/ic_envelope"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:textColorHint="@color/black"
+        android:hint="Email"
+        android:layout_height="wrap_content">
+
     <androidx.appcompat.widget.AppCompatEditText
         android:textSize="@dimen/_12ssp"
         android:text="nisarg.trivedi1192@gmail.com"
         android:singleLine="true"
         android:inputType="textEmailAddress"
         android:fontFamily="@font/mon_regular"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/edtUsername"
-        android:hint="@string/username"
         android:backgroundTint="@color/white"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp">
 
+
     </androidx.appcompat.widget.AppCompatEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxCornerRadiusTopStart="@dimen/_25sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_25sdp"
+        app:boxCornerRadiusBottomEnd="@dimen/_25sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_25sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:hint="Password"
+        app:startIconTint="@color/black"
+        app:startIconDrawable="@drawable/ic_key_black"
+       android:textColorHint="@color/black"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/app_back_color"
+        android:layout_height="wrap_content">
+
     <androidx.appcompat.widget.AppCompatEditText
         android:textSize="@dimen/_12ssp"
         android:text="Nisarg@1192"
         android:singleLine="true"
         android:inputType="textPassword"
         android:fontFamily="@font/mon_regular"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+
         android:id="@+id/edtPassword"
-        android:hint="@string/password"
         android:backgroundTint="@color/white"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp">
 
     </androidx.appcompat.widget.AppCompatEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignin"

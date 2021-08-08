@@ -23,12 +23,7 @@ class MainActivity : BaseActivity() {
         binding =  DataBindingUtil.setContentView(this, R.layout.activity_login)
         obj = Cognito(this)
 
-        if(!TextUtils.isEmpty(appPreferences.getString("USERNAME"))){
-            startActivity(
-                Intent(this, SelectPortalActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            )
-        }
+
 
         binding.btnSignin.setOnClickListener {
 

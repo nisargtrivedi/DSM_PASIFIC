@@ -363,7 +363,7 @@
                         android:fontFamily="@font/opensans_regular"
                         android:gravity="center|left"
                         android:paddingLeft="@dimen/_10sdp"
-                        android:text="*All prices are including GST"
+                        android:text="*All prices are excluding GST"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10ssp">
 

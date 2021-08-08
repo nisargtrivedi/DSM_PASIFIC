@@ -76,7 +76,7 @@
                         android:gravity="center"
                         android:text="Round"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_7ssp"></TextView>
+                        android:textSize="@dimen/_6ssp"></TextView>
 
                 </LinearLayout>
 

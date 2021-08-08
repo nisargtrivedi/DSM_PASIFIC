@@ -175,7 +175,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     }
     private fun onSendEmail(){
         binding.tvDiamongEnquiry.setOnClickListener {
-            openDialog(android.text.TextUtils.join(",", selecteddiamondlistforenquiry))
+                openDialog(android.text.TextUtils.join(",", selecteddiamondlistforenquiry))
         }
     }
 
@@ -334,6 +334,9 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                         }
                         TextUtils.isEmpty(edtMessage.text.toString()) -> {
                             (context as MainNavigation).showToast("Please enter message")
+                        }
+                        selecteddiamondlistforenquiry.size<=0 ->{
+                            (context as MainNavigation).showToast("Please select any diamond")
                         }
                         else -> {
                             sendMailAPI(

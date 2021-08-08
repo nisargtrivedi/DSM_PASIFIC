@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -26,6 +27,9 @@ import com.dsm.ui.model.JewelleryCategoryModel
 import com.dsm.ui.model.NavMenuModel
 import com.dsm.ui.model.SearchItemModel
 import com.dsm.ui.model.labModel
+import com.dsm.ui.util.AppPreferences
+import com.dsm.ui.util.Cognito
+import com.google.android.material.button.MaterialButton
 
 
 class MainNavigation : BaseActivity() {
@@ -51,8 +55,12 @@ class MainNavigation : BaseActivity() {
     var lab = ""
     var categortList : ArrayList<JewelleryCategoryModel> = ArrayList()
     var selectedPosition = -1
+    var cognito: Cognito? = null
+    lateinit var appPreferences: AppPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appPreferences= AppPreferences(this)
+        cognito = Cognito(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_navigation)
         setupToolbar()
         setupDrawerToggle()
@@ -121,17 +129,40 @@ class MainNavigation : BaseActivity() {
             0 -> {
                 fragment = HomeFragment()
                 setTitle(resources.getString(R.string.toolbar_text))
-            }1 -> {
+            }
+            1 -> {
                 fragment = JewelleryFragment()
                 setTitle(resources.getString(R.string.jewellery_text))
-            }2 -> {
-                fragment = HomeFragment()
+            }
+            2 -> {
+                fragment = GeneralSettingsFragment()
                 setTitle(resources.getString(R.string.toolbar_text))
-            }10 -> {
+            }
+            10 -> {
                 fragment = InventoryFragment()
                 setTitle(resources.getString(R.string.toolbar_text))
                 binding.lstMenu.setItemChecked(0, true)
                 binding.lstMenu.setSelection(0)
+            }
+            3 -> {
+                try {
+                    val dialogBuilder = AlertDialog.Builder(this)
+                    val inflater: LayoutInflater = getLayoutInflater()
+                    val dialogView: View = inflater.inflate(R.layout.dialog_confirm, null)
+                    dialogBuilder.setView(dialogView)
+                    dialogBuilder.setCancelable(false)
+                    val btnCancel: MaterialButton = dialogView.findViewById(R.id.btnCancel)
+                    val btnOk: MaterialButton = dialogView.findViewById(R.id.btnOk)
+                    val alertDialog = dialogBuilder.create()
+                    alertDialog.show()
+                    btnOk.setOnClickListener {
+                        appPreferences.set("USERNAME", "")
+                        cognito!!.userLogout(this, appPreferences.getString("USERNAME"),alertDialog)
+                        //getActivity().finish();
+                    }
+                    btnCancel.setOnClickListener { alertDialog.dismiss() }
+                } catch (ex: Exception) {
+                }
             }
             else -> {
             }
@@ -139,7 +170,10 @@ class MainNavigation : BaseActivity() {
         if (fragment != null) {
             val fragmentManager: FragmentManager = supportFragmentManager
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).commit()
+            fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(
+                R.id.content_frame,
+                fragment
+            ).commit()
             if(position!=10) {
                 binding.lstMenu.setItemChecked(position, true)
                 binding.lstMenu.setSelection(position)
@@ -151,26 +185,32 @@ class MainNavigation : BaseActivity() {
         }
     }
 
-    fun setTitle(s:String){
+    fun setTitle(s: String){
         binding.toolbarText.text = s
     }
 
-    fun subCategoryFragment(categoryID:JewelleryCategoryModel) {
+    fun subCategoryFragment(categoryID: JewelleryCategoryModel) {
         var fragment: Fragment?
             fragment = JewellerySubCategoryFragment.newInstance(categoryID)
             setTitle(resources.getString(R.string.jewellery_text))
         val fragmentManager: FragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).addToBackStack("SubCat").commit()
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(
+            R.id.content_frame,
+            fragment
+        ).addToBackStack("SubCat").commit()
         //setTitle(mNavigationDrawerItemTitles.get(position))
         binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
-    fun jewelleryListFragment(subcategoryID:JewelleryCategoryModel) {
+    fun jewelleryListFragment(subcategoryID: JewelleryCategoryModel) {
         var fragment: Fragment?
         fragment = JewelleryListFragment.newInstance(subcategoryID)
         setTitle(resources.getString(R.string.jewellery_text))
         val fragmentManager: FragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).addToBackStack("list").commit()
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(
+            R.id.content_frame,
+            fragment
+        ).addToBackStack("list").commit()
         //setTitle(mNavigationDrawerItemTitles.get(position))
         binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
@@ -181,7 +221,10 @@ class MainNavigation : BaseActivity() {
         setTitle(resources.getString(R.string.jewellery_text))
         val fragmentManager: FragmentManager = supportFragmentManager
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment)
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(
+            R.id.content_frame,
+            fragment
+        )
             .commit()
         //setTitle(mNavigationDrawerItemTitles.get(position))
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -192,14 +235,30 @@ class MainNavigation : BaseActivity() {
         fragment = SearchFragment.newInstance()
         setTitle(resources.getString(R.string.toolbar_text))
         val fragmentManager: FragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.content_frame, fragment).commit()
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(
+            R.id.content_frame,
+            fragment
+        ).commit()
+        //setTitle(mNavigationDrawerItemTitles.get(position))
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+    }
+
+    fun ProfileScreens() {
+        var fragment: Fragment?
+        fragment = ProfileFragment.newInstance()
+        setTitle(resources.getString(R.string.profile_setting))
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(
+            R.id.content_frame,
+            fragment
+        ).commit()
         //setTitle(mNavigationDrawerItemTitles.get(position))
         binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     override fun onBackPressed() {
         val count = supportFragmentManager.backStackEntryCount
-        Log.i("Count------?",count.toString())
+        Log.i("Count------?", count.toString())
         if (count == 1) {
             //val fragmentPopped: Boolean = supportFragmentManager.popBackStackImmediate("SubCat", 0)
             //if(fragmentPopped) {
@@ -230,7 +289,7 @@ class MainNavigation : BaseActivity() {
     }
 
 
-    fun setCategoryList(list:List<JewelleryCategoryModel>) : ArrayList<JewelleryCategoryModel>{
+    fun setCategoryList(list: List<JewelleryCategoryModel>) : ArrayList<JewelleryCategoryModel>{
         categortList.clear()
         categortList.addAll(list)
         return categortList
@@ -398,7 +457,7 @@ class MainNavigation : BaseActivity() {
         })
     }
 
-    fun addShape(shape:String){
+    fun addShape(shape: String){
         if(searchList.contains(shapeKey(shape))){
             searchList.remove(shapeKey(shape))
         }else{
@@ -410,24 +469,24 @@ class MainNavigation : BaseActivity() {
     fun shapeKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "ROUND" -> key="2441442"
-            "PRINCESS" -> key="78"
-            "CUSHION" -> key="19"
-            "CUSHION B" -> key="85"
-            "PEAR" -> key="17"
-            "OVAL" -> key="88"
-            "MARQUISE" -> key="84"
-            "HEART" -> key="83"
-            "EMERALD" -> key="77"
-            "EMERALD SQ" -> key="76"
-            "RADIANT" -> key="87"
-            "RADIANT SQ" -> key="218"
+            "ROUND" -> key = "2441442"
+            "PRINCESS" -> key = "78"
+            "CUSHION" -> key = "19"
+            "CUSHION B" -> key = "85"
+            "PEAR" -> key = "17"
+            "OVAL" -> key = "88"
+            "MARQUISE" -> key = "84"
+            "HEART" -> key = "83"
+            "EMERALD" -> key = "77"
+            "EMERALD SQ" -> key = "76"
+            "RADIANT" -> key = "87"
+            "RADIANT SQ" -> key = "218"
         }
         return key
     }
 
 
-    fun addClarity(shape:String){
+    fun addClarity(shape: String){
         if(ClarityList.contains(clerityKey(shape))){
             ClarityList.remove(clerityKey(shape))
         }else{
@@ -439,24 +498,24 @@ class MainNavigation : BaseActivity() {
     fun clerityKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "D" -> key="3"
-            "E" -> key="11"
-            "F" -> key="22"
-            "G" -> key="23"
-            "H" -> key="26"
-            "I" -> key="27"
-            "J" -> key="28"
-            "K" -> key="29"
-            "L" -> key="30"
-            "M" -> key="31"
-            "N" -> key="32"
+            "D" -> key = "3"
+            "E" -> key = "11"
+            "F" -> key = "22"
+            "G" -> key = "23"
+            "H" -> key = "26"
+            "I" -> key = "27"
+            "J" -> key = "28"
+            "K" -> key = "29"
+            "L" -> key = "30"
+            "M" -> key = "31"
+            "N" -> key = "32"
         }
         return key
     }
 
 
 
-    fun addDia(shape:String){
+    fun addDia(shape: String){
         if(diaList.contains(diaKey(shape))){
             diaList.remove(diaKey(shape))
         }else{
@@ -467,25 +526,25 @@ class MainNavigation : BaseActivity() {
     fun diaKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "IF" -> key="188"
-            "VVS" -> key="238"
-            "VVS1" -> key="4"
-            "VVS2" -> key="12"
-            "VS" -> key="220"
-            "VS1" -> key="34"
-            "VS2" -> key="35"
-            "SI" -> key="219"
-            "SI1" -> key="36"
-            "SI2" -> key="37"
-            "SI3" -> key="189"
-            "I1" -> key="38"
-            "I2" -> key="38"
-            "I3" -> key="38"
+            "IF" -> key = "188"
+            "VVS" -> key = "238"
+            "VVS1" -> key = "4"
+            "VVS2" -> key = "12"
+            "VS" -> key = "220"
+            "VS1" -> key = "34"
+            "VS2" -> key = "35"
+            "SI" -> key = "219"
+            "SI1" -> key = "36"
+            "SI2" -> key = "37"
+            "SI3" -> key = "189"
+            "I1" -> key = "38"
+            "I2" -> key = "38"
+            "I3" -> key = "38"
         }
         return key
     }
 
-    fun addCut(shape:String){
+    fun addCut(shape: String){
         if(cutList.contains(FcutKey(shape))){
             cutList.remove(FcutKey(shape))
         }else{
@@ -496,16 +555,16 @@ class MainNavigation : BaseActivity() {
     fun FcutKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "EX" -> key="6"
-            "VG" -> key="13"
-            "GD" -> key="46"
-            "G" -> key="47"
-            "F" -> key="48" }
+            "EX" -> key = "6"
+            "VG" -> key = "13"
+            "GD" -> key = "46"
+            "G" -> key = "47"
+            "F" -> key = "48" }
         return key
     }
 
 
-    fun addPolKey(shape:String){
+    fun addPolKey(shape: String){
         if(polList.contains(diaPolKey(shape))){
             polList.remove(diaPolKey(shape))
         }else{
@@ -516,16 +575,16 @@ class MainNavigation : BaseActivity() {
     fun diaPolKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "EX" -> key="7"
-            "VG" -> key="14"
-            "GD" -> key="52"
-            "G" -> key="53"
-            "F" -> key="54" }
+            "EX" -> key = "7"
+            "VG" -> key = "14"
+            "GD" -> key = "52"
+            "G" -> key = "53"
+            "F" -> key = "54" }
         return key
     }
 
 
-    fun addSymKey(shape:String){
+    fun addSymKey(shape: String){
         if(symList.contains(diasymKey(shape))){
             symList.remove(diasymKey(shape))
         }else{
@@ -536,11 +595,11 @@ class MainNavigation : BaseActivity() {
     fun diasymKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "EX" -> key="8"
-            "VG" -> key="15"
-            "GD" -> key="49"
-            "G" -> key="50"
-            "F" -> key="51" }
+            "EX" -> key = "8"
+            "VG" -> key = "15"
+            "GD" -> key = "49"
+            "G" -> key = "50"
+            "F" -> key = "51" }
         return key
     }
 }

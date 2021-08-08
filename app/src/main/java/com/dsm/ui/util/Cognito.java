@@ -1,6 +1,7 @@
 package com.dsm.ui.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -73,10 +74,13 @@ public class Cognito {
         cognitoUser.getSessionInBackground(authenticationHandler);
     }
 
-    public void userLogout(Activity activity,String userId){
+    public void userLogout(Activity activity, String userId, AlertDialog alertDialog){
         CognitoUser cognitoUser =  userPool.getUser(userId);
         cognitoUser.signOut();
-        appContext.startActivity(new Intent(appContext, MainActivity.class)
+        alertDialog.hide();alertDialog.dismiss();
+        activity.finishAffinity();
+        activity.startActivity(new Intent(appContext, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP)
         );
     }
     // Callback handler for the sign-in process

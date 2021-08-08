@@ -22,7 +22,7 @@ android {
             buildConfigField "String", "API_URL", "\"https://q0n5q0f88c.execute-api.ap-southeast-2.amazonaws.com/Beta/\""
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "API_URL", "\"https://q0n5q0f88c.execute-api.ap-southeast-2.amazonaws.com/Beta/\""
         }
