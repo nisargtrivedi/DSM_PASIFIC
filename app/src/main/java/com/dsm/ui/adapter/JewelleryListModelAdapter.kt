@@ -59,7 +59,7 @@ class JewelleryListModelAdapter(context: Context, jewelleryList: List<JModels>) 
 
         holder.tvJewelleryName.setText(task.modelNo)
 
-        if(!task.image!!.imagePath.isNullOrEmpty()) {
+        if(task.image!=null && !task.image!!.imagePath.isNullOrEmpty()) {
             Glide.with(context)
                 .load(task.image!!.imagePath)
                 .into(holder.imgJewellery);

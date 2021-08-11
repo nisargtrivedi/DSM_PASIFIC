@@ -130,7 +130,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 binding.tvWeight.text =
                                                     resource.data.list.jObj!!.gold_weight
                                                 binding.tvPrice.text =
-                                                    resource.data.list.jObj!!.jewellery_price
+                                                    resource.data.list.jObj!!.jewellery_price + " + GST"
 
                                                 if (!resource.data.list.jObj!!.image.isNullOrEmpty()) {
                                                     Glide.with(this)
@@ -181,7 +181,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
 
 
                                                 binding.llCarat.visibility = View.GONE
-                                                binding.llTDW.visibility = View.GONE
+                                                //binding.llTDW.visibility = View.GONE
                                                 binding.llWeight.visibility = View.GONE
 
                                                 id= objModel.dataID.toString()
@@ -203,7 +203,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 binding.tvWeight.text =
                                                     resource.data.list.listModel!!.gold_weight
                                                 binding.tvPrice.text =
-                                                    resource.data.list.listModel!!.jewellery_price
+                                                    resource.data.list.listModel!!.jewellery_price + " + GST"
 
                                                 imagesList.clear()
                                                 imagesList.addAll(resource.data.list.listModel!!.images)
@@ -247,12 +247,15 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                     }
 
                                                 }
-                                                pName =  resource.data.list.listModel!!.jewelleryfrontproductname
-                                                pdesc =  resource.data.list.listModel!!.jewellery_description
-                                                pmetal = binding.spMetals.selectedItem.toString()
-                                                pmodelNo = resource.data.list.listModel!!.jewelleryLotNo
-                                                pprice = resource.data.list.listModel!!.jewellery_price
-
+                                                try {
+                                                    pName = resource.data.list.listModel!!.jewelleryfrontproductname
+                                                    pdesc = resource.data.list.listModel!!.jewellery_description
+                                                    pmetal = binding.spMetals.selectedItem.toString()
+                                                    pmodelNo = resource.data.list.listModel!!.jewelleryLotNo
+                                                    pprice = resource.data.list.listModel!!.jewellery_price
+                                                }catch (e:Exception){
+                                                    showToast(e.toString())
+                                                }
 
 
 //                                                if (!resource.data.list.listModel!!.image.isNullOrEmpty()) {
