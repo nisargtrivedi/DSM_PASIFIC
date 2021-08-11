@@ -208,6 +208,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
 
     fun getDiamondFromShape(shape: String){
+        Log.d("Data","Page no is $pageNo and End Page is $endPageNo")
         if(pageNo>endPageNo){
             showToast("No More Diamond Details found", activity)
             isLoading = false
@@ -291,6 +292,8 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 //showToast(tab!!.id.toString(),activity)
                 pageNo = 0
+                endPageNo = 1
+                currentPage = 0
                 diamondList.clear()
                 inventoryAdapter.notifyDataSetChanged()
                 binding.rvInventory.scrollToPosition(0)
@@ -390,7 +393,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
     private fun showPriceLink(obj:DiamondModel){
         var diamondViewModel  = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
-        diamondViewModel.getPrice(preferences.getString("ACCESS_TOKEN"),"harsh.shah@siimteq.com",obj.location,obj.diamond_id.toString()).observe(requireActivity(), {
+        diamondViewModel.getPrice(preferences.getString("ACCESS_TOKEN"),preferences.getString("USERNAME"),obj.location,obj.diamond_id.toString()).observe(requireActivity(), {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {
@@ -399,7 +402,9 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                     Status.SUCCESS -> {
                         hideLoading()
                         if (resource.data!!.ResponseStatus == 200) {
-                                Log.e("CAlledddd-------------","----------------------")
+                            obj.isshowPrice=1
+                            inventoryAdapter.notifyDataSetChanged()
+                               // Log.e("CAlledddd-------------","----------------------")
                         }
                     }
                     Status.ERROR -> {

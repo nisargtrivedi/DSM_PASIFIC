@@ -51,7 +51,7 @@
         android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_10ssp"
         android:text="nisarg.trivedi1192@gmail.com"
         android:singleLine="true"
         android:inputType="textEmailAddress"
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_10ssp"
         android:text="Nisarg@1192"
         android:singleLine="true"
         android:inputType="textPassword"
@@ -105,7 +105,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/mon_regular"
         android:text="Sign In"
-        android:textSize="@dimen/_13ssp"
+        android:textSize="@dimen/_12ssp"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:layout_width="@dimen/_150sdp"

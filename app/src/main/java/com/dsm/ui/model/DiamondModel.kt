@@ -89,4 +89,6 @@ class DiamondModel : Serializable{
 
     var isCheched : Int = 0
 
+    var isshowPrice : Int = 0
+
 }
