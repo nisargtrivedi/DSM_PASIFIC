@@ -231,27 +231,30 @@ class JewelleryListFragment : BaseFragment(),CoroutineScope,AdapterView.OnItemSe
                 id: Long
             ) {
                 if(position==1){
-                    jewelleryList.sortBy {
+                    if(jewelleryList.size>0) {
+                        jewelleryList.sortBy {
 
                             it.jewelleryfrontcostaud.toInt()
 
+                        }
+                        jmodelList.sortBy {
+                            it.price.toInt()
+                        }
+                        jewelleryAdapter.notifyDataSetChanged()
+                        jewelleryModelAdapter.notifyDataSetChanged()
                     }
-                    jmodelList.sortBy {
-                        it.price.toInt()
-                    }
-                    jewelleryAdapter.notifyDataSetChanged()
-                    jewelleryModelAdapter.notifyDataSetChanged()
 
                 }else if(position==2){
-
-                    jewelleryList.sortByDescending {
-                        it.jewelleryfrontcostaud.toInt()
+                    if(jewelleryList.size>0) {
+                        jewelleryList.sortByDescending {
+                            it.jewelleryfrontcostaud.toInt()
+                        }
+                        jmodelList.sortByDescending {
+                            it.price.toInt()
+                        }
+                        jewelleryAdapter.notifyDataSetChanged()
+                        jewelleryModelAdapter.notifyDataSetChanged()
                     }
-                    jmodelList.sortByDescending {
-                        it.price.toInt()
-                    }
-                    jewelleryAdapter.notifyDataSetChanged()
-                    jewelleryModelAdapter.notifyDataSetChanged()
                 }
             }
 
@@ -273,7 +276,10 @@ class JewelleryListFragment : BaseFragment(),CoroutineScope,AdapterView.OnItemSe
 //        }else{
         if(isFirst){
             isFirst=false
-            (activity as MainNavigation).jewelleryCategoryFragment()
+
+            var obj=parent!!.getItemAtPosition(position) as JewelleryCategoryModel
+            (activity as MainNavigation).subCategoryFragment(obj)
+            //(activity as MainNavigation).jewelleryCategoryFragment()
         }
 
         //}
