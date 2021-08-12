@@ -101,6 +101,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="@dimen/_20sdp"
         android:id="@+id/btnSignin"
         android:layout_gravity="center"
         android:fontFamily="@font/mon_regular"

@@ -22,16 +22,16 @@ class Splash : BaseActivity() {
             /* Create an Intent that will start the Menu-Activity. */
 
             if(!TextUtils.isEmpty(appPreferences.getString("USERNAME"))){
+                finish()
                 startActivity(
-                        Intent(this, SelectPortalActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                )
+                        Intent(this, SelectPortalActivity::class.java))
+
             }else {
+                finish()
                 startActivity(
-                        Intent(this, MainActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                )
+                        Intent(this, MainActivity::class.java))
             }
+            overridePendingTransition(R.anim.slide_right, R.anim.noanim);
 
         }, 3000)
 

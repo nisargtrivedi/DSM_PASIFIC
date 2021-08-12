@@ -235,7 +235,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
         var diamondViewModel  = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
         pageNo++
-        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com", shape, pageNo, edtSearch, srchCarat, null, search, searchLab, clr, dia, srchPrice, cut, pol, sym).observe(requireActivity(), {
+        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com", if(search.isNullOrEmpty()) shape else search, pageNo, edtSearch, srchCarat, null, null, searchLab, clr, dia, srchPrice, cut, pol, sym).observe(requireActivity(), {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {
@@ -291,6 +291,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
         binding.tabShapes.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 //showToast(tab!!.id.toString(),activity)
+                (context as MainNavigation).searchList.clear()
                 pageNo = 0
                 endPageNo = 1
                 currentPage = 0
@@ -346,8 +347,10 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                                 edtEmail.text.toString(),
                                 edtMessage.text.toString(),
                                 msg,
-                                if (onCheck) "Yes" else "No"
+                                if (onCheck) "Yes" else "No",
+                                    alert11
                             )
+
                         }
                     }
                 }
@@ -366,7 +369,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                 }
     }
 
-    private fun sendMailAPI(email:String,message:String,id:String,send:String){
+    private fun sendMailAPI(email:String,message:String,id:String,send:String,alert:AlertDialog){
         mailViewModel= ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(SendMailViewModel::class.java)
         mailViewModel.sendMail(email=email,message = message,enquiryID=id,send_me_also = send).observe(viewLifecycleOwner, Observer {
             it?.let { resource ->
@@ -375,6 +378,8 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                         showLoading(activity)
                     }
                     Status.SUCCESS -> {
+                        alert.cancel()
+                        alert.dismiss()
                         hideLoading()
                         if (resource.data!!.ResponseStatus == 200) {
                             (context as MainNavigation).showToast(resource.message)

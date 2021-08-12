@@ -56,6 +56,7 @@
         android:minHeight="@dimen/_100sdp"
         android:layout_height="wrap_content"></androidx.appcompat.widget.AppCompatEditText>
     <TextView
+        android:visibility="gone"
         android:id="@+id/Email"
         android:layout_below="@id/edtMessage"
         android:layout_marginRight="@dimen/_10sdp"
@@ -69,7 +70,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
     <androidx.appcompat.widget.AppCompatEditText
+        android:visibility="gone"
         android:id="@+id/edtEmail"
+        android:text="harsh.shah@siimteq.com"
         android:textSize="@dimen/_10ssp"
         android:fontFamily="@font/mon_regular"
         android:paddingLeft="@dimen/_7sdp"

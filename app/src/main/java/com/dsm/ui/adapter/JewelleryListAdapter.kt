@@ -66,7 +66,7 @@ class JewelleryListAdapter(context: Context, jewelleryList: List<JewelleryModel>
                 .load(R.drawable.noimage)
                 .into(holder.imgJewellery);
         }
-        holder.tvPrice.text = "AUD $ "+task.jewelleryfrontcostaud
+        holder.tvPrice.text = task.jewelleryfrontcostaud
         //holder.imgJewellery.setText(task.PPCT)
 
         holder.tvDetails.setOnClickListener {

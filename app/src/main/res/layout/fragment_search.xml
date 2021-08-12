@@ -368,9 +368,9 @@
                             android:layout_marginRight="@dimen/_5sdp"
                             android:layout_marginLeft="@dimen/_5sdp"
                             android:textColor="@color/black"
-                            app:cornerRadius="@dimen/_5sdp"
+                            app:cornerRadius="@dimen/_10sdp"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_30sdp"></com.google.android.material.button.MaterialButton>
+                            android:layout_height="@dimen/_35sdp"></com.google.android.material.button.MaterialButton>
 
                     </RelativeLayout>
                 </LinearLayout>
