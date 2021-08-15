@@ -275,7 +275,7 @@
                             android:textColor="@color/white"
                             android:textFontWeight="400"
                             android:fontFamily="@font/opensans_regular"
-                            android:text="SELECT CARAT RANGE"
+                            android:text="SELECT PRICE RANGE"
                             android:textSize="@dimen/_10ssp"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_20sdp"></TextView>

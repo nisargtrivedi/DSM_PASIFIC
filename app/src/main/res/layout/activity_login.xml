@@ -40,6 +40,8 @@
         app:boxCornerRadiusTopEnd="@dimen/_25sdp"
         app:boxCornerRadiusBottomEnd="@dimen/_25sdp"
         app:boxCornerRadiusBottomStart="@dimen/_25sdp"
+        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="0dp"
         app:startIconTint="@color/black"
         app:startIconDrawable="@drawable/ic_envelope"
         android:layout_marginRight="@dimen/_20sdp"
@@ -48,11 +50,12 @@
         android:layout_width="match_parent"
         android:textColorHint="@color/black"
         android:hint="Email"
+        app:hintTextColor="@color/black"
         android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatEditText
         android:textSize="@dimen/_10ssp"
-        android:text="nisarg.trivedi1192@gmail.com"
+        android:text=""
         android:singleLine="true"
         android:inputType="textEmailAddress"
         android:fontFamily="@font/mon_regular"
@@ -67,6 +70,8 @@
     </androidx.appcompat.widget.AppCompatEditText>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
+        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="0dp"
         app:boxCornerRadiusTopStart="@dimen/_25sdp"
         app:boxCornerRadiusTopEnd="@dimen/_25sdp"
         app:boxCornerRadiusBottomEnd="@dimen/_25sdp"
@@ -76,6 +81,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:hint="Password"
+        app:hintTextColor="@color/black"
         app:startIconTint="@color/black"
         app:startIconDrawable="@drawable/ic_key_black"
        android:textColorHint="@color/black"
@@ -85,7 +91,7 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:textSize="@dimen/_10ssp"
-        android:text="Nisarg@1192"
+        android:text=""
         android:singleLine="true"
         android:inputType="textPassword"
         android:fontFamily="@font/mon_regular"
