@@ -119,7 +119,7 @@ public class ForgotPassword extends AppCompatActivity {
                                     @Override
                                     public void onFailure(Exception exception) {
                                         Util.hideDialog();
-                                        Util.showDialog(ForgotPassword.this, "email address not registered");
+                                        Util.showDialog(ForgotPassword.this, "New Password should have one special character");
                                         Log.d("PASSWORD CHANGE FAILED------>", exception.getLocalizedMessage());
                                     }
                                 });
