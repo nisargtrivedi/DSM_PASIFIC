@@ -62,14 +62,16 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
         launch {
             withContext(Dispatchers.Main) {
 
-                (context as MainNavigation).searchList.clear()
-                (context as MainNavigation).ClarityList.clear()
-                (context as MainNavigation).diaList.clear()
-                (context as MainNavigation).cutList.clear()
-                (context as MainNavigation).polList.clear()
-                (context as MainNavigation).symList.clear()
-                (context as MainNavigation).searchEditext = ""
-                (context as MainNavigation).lab = ""
+//                (context as MainNavigation).searchList.clear()
+//                (context as MainNavigation).ClarityList.clear()
+//                (context as MainNavigation).diaList.clear()
+//                (context as MainNavigation).cutList.clear()
+//                (context as MainNavigation).polList.clear()
+//                (context as MainNavigation).symList.clear()
+//                (context as MainNavigation).edtCaratList.clear()
+//                (context as MainNavigation).edtPriceList.clear()
+//                (context as MainNavigation).searchEditext = ""
+//                (context as MainNavigation).lab = ""
 
                 binding.imgClose.setOnClickListener {
                     (context as MainNavigation).searchList.clear()
@@ -81,6 +83,7 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                     (context as MainNavigation).edtCaratList.clear()
                     (context as MainNavigation).edtPriceList.clear()
                     (context as MainNavigation).searchEditext = ""
+                    (context as MainNavigation).lab = ""
                     (context as MainNavigation).selectItem(10)
 
 

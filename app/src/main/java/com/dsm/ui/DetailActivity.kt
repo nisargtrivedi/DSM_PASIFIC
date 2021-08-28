@@ -27,6 +27,7 @@ import com.dsm.ui.model.JModels
 import com.dsm.ui.model.JewelleryCategoryModel
 import com.dsm.ui.model.JewelleryModel
 import com.dsm.ui.network.RetrofitBuilder
+import com.dsm.ui.util.AppPreferences
 import com.dsm.ui.util.Status
 import com.dsm.ui.viewmodel.JewelleryDetailViewModel
 import com.dsm.ui.viewmodel.JewelleryListViewModel
@@ -59,6 +60,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
     var pmetal="N/A"
     var pdesc="N/A"
     var pprice="N/A"
+    lateinit var appPreferences:AppPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_item_details)
@@ -66,6 +68,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
         setupToolbar()
         loadData()
         btnClick()
+        appPreferences= AppPreferences(this)
     }
     private fun setupToolbar() {
 
@@ -316,7 +319,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                     showToast("Please enter message")
                 }
                 else -> {
-                    sendMailAPI(edtEmail.text.toString(),
+                    sendMailAPI(appPreferences.getString("EMAIL"),
                     edtMessage.text.toString())
                 }
             }

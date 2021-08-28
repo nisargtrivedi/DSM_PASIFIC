@@ -134,6 +134,7 @@ public class Cognito {
             Util.hideDialog();
             appPreferences.set("ACCESS_TOKEN",userSession.getAccessToken().getJWTToken());
             appPreferences.set("USERNAME",userSession.getUsername());
+            appPreferences.set("EMAIL",userEMAIl);
             appPreferences.set("ID_TOKEN",userSession.getIdToken().getJWTToken());
             appPreferences.set("REFRESH_TOKEN",userSession.getRefreshToken().getToken());
 

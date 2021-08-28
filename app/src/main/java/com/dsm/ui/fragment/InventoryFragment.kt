@@ -235,7 +235,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
         var diamondViewModel  = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(DiamondViewModel::class.java)
         pageNo++
-        diamondViewModel.getAllDiamonds("harsh.shah@siimteq.com", if(search.isNullOrEmpty()) shape else search, pageNo, edtSearch, srchCarat, null, null, searchLab, clr, dia, srchPrice, cut, pol, sym).observe(requireActivity(), {
+        diamondViewModel.getAllDiamonds(preferences.getString("EMAIL"), if(search.isNullOrEmpty()) shape else search, pageNo, edtSearch, srchCarat, null, null, searchLab, clr, dia, srchPrice, cut, pol, sym).observe(requireActivity(), {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {

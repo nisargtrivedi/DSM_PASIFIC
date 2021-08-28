@@ -30,9 +30,11 @@ import com.dsm.ui.model.labModel
 import com.dsm.ui.util.AppPreferences
 import com.dsm.ui.util.Cognito
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 
-class MainNavigation : BaseActivity() {
+class MainNavigation : BaseActivity() , CoroutineScope {
 
     lateinit var binding: ActivityMainNavigationBinding
     lateinit var mDrawerToggle : ActionBarDrawerToggle
@@ -56,6 +58,9 @@ class MainNavigation : BaseActivity() {
     var categortList : ArrayList<JewelleryCategoryModel> = ArrayList()
     var selectedPosition = -1
     var cognito: Cognito? = null
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
     lateinit var appPreferences: AppPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +68,12 @@ class MainNavigation : BaseActivity() {
         cognito = Cognito(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_navigation)
         setupToolbar()
-        setupDrawerToggle()
-        loadMenuItems()
+        job = Job()
+        launch {
+            setupDrawerToggle()
+            loadMenuItems()
+        }
+
     }
     fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
@@ -157,6 +166,7 @@ class MainNavigation : BaseActivity() {
                     alertDialog.show()
                     btnOk.setOnClickListener {
                         appPreferences.set("USERNAME", "")
+                        appPreferences.set("EMAIL","")
                         cognito!!.userLogout(this, appPreferences.getString("USERNAME"),alertDialog)
                         //getActivity().finish();
                     }
@@ -311,150 +321,180 @@ class MainNavigation : BaseActivity() {
 
 
     fun loadSearchItem(rv: RecyclerView) {
-        rv.layoutManager = GridLayoutManager(this, 4)
+        rv.layoutManager = GridLayoutManager(this@MainNavigation, 4)
         rv.setHasFixedSize(true)
-        val models: MutableList<SearchItemModel> = java.util.ArrayList()
-        models.add(SearchItemModel("ROUND"))
-        models.add(SearchItemModel("PRINCESS"))
-        models.add(SearchItemModel("CUSHION"))
-        models.add(SearchItemModel("CUSHION B"))
-        models.add(SearchItemModel("PEAR"))
-        models.add(SearchItemModel("OVAL"))
-        models.add(SearchItemModel("MARQUISE"))
-        models.add(SearchItemModel("HEART"))
-        models.add(SearchItemModel("EMERALD"))
-        models.add(SearchItemModel("EMERALD SQ"))
-        models.add(SearchItemModel("RADIANT"))
-        models.add(SearchItemModel("RADIANT SQ"))
-        val adapter = SearchItemAdapter(this, models, 1)
-        rv.adapter = adapter
-        adapter.onJwelleryClick(object : onSearchItemClick {
-            override fun onClick(obj: SearchItemModel) {
-                obj.isSelected = !obj.isSelected
-                addShape(obj.name)
-                adapter.notifyDataSetChanged()
+        launch {
+            withContext(Dispatchers.Main) {
+
+                val models: MutableList<SearchItemModel> = java.util.ArrayList()
+                models.add(SearchItemModel("ROUND"))
+                models.add(SearchItemModel("PRINCESS"))
+                models.add(SearchItemModel("CUSHION"))
+                models.add(SearchItemModel("CUSHION B"))
+                models.add(SearchItemModel("PEAR"))
+                models.add(SearchItemModel("OVAL"))
+                models.add(SearchItemModel("MARQUISE"))
+                models.add(SearchItemModel("HEART"))
+                models.add(SearchItemModel("EMERALD"))
+                models.add(SearchItemModel("EMERALD SQ"))
+                models.add(SearchItemModel("RADIANT"))
+                models.add(SearchItemModel("RADIANT SQ"))
+                val adapter = SearchItemAdapter(this@MainNavigation, models, 1)
+                rv.adapter = adapter
+                adapter.onJwelleryClick(object : onSearchItemClick {
+                    override fun onClick(obj: SearchItemModel) {
+                        obj.isSelected = !obj.isSelected
+                        addShape(obj.name)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
             }
-        })
+        }
     }
 
     fun loadColor(rv: RecyclerView) {
-        rv.layoutManager = GridLayoutManager(this, 9)
+        rv.layoutManager = GridLayoutManager(this@MainNavigation, 9)
         rv.setHasFixedSize(true)
-        val models: MutableList<SearchItemModel> = java.util.ArrayList()
-        models.add(SearchItemModel("D"))
-        models.add(SearchItemModel("E"))
-        models.add(SearchItemModel("F"))
-        models.add(SearchItemModel("G"))
-        models.add(SearchItemModel("H"))
-        models.add(SearchItemModel("I"))
-        models.add(SearchItemModel("J"))
-        models.add(SearchItemModel("K"))
-        models.add(SearchItemModel("L"))
-        models.add(SearchItemModel("M"))
-        models.add(SearchItemModel("N"))
-        val adapter = SearchItemAdapter(this, models, 2)
+        launch {
+            withContext(Dispatchers.Main) {
 
-        rv.adapter = adapter
-        adapter.onJwelleryClick(object : onSearchItemClick {
-            override fun onClick(obj: SearchItemModel) {
-                obj.isSelected = !obj.isSelected
-                addClarity(obj.name)
-                adapter.notifyDataSetChanged()
+                val models: MutableList<SearchItemModel> = java.util.ArrayList()
+                models.add(SearchItemModel("D"))
+                models.add(SearchItemModel("E"))
+                models.add(SearchItemModel("F"))
+                models.add(SearchItemModel("G"))
+                models.add(SearchItemModel("H"))
+                models.add(SearchItemModel("I"))
+                models.add(SearchItemModel("J"))
+                models.add(SearchItemModel("K"))
+                models.add(SearchItemModel("L"))
+                models.add(SearchItemModel("M"))
+                models.add(SearchItemModel("N"))
+                val adapter = SearchItemAdapter(this@MainNavigation, models, 2)
+
+                rv.adapter = adapter
+                adapter.onJwelleryClick(object : onSearchItemClick {
+                    override fun onClick(obj: SearchItemModel) {
+                        obj.isSelected = !obj.isSelected
+                        addClarity(obj.name)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
             }
-        })
+        }
     }
 
     fun loadCut(rv: RecyclerView) {
-        rv.layoutManager = GridLayoutManager(this, 1)
+        rv.layoutManager = GridLayoutManager(this@MainNavigation, 1)
         rv.setHasFixedSize(true)
-        val models: MutableList<SearchItemModel> = java.util.ArrayList()
-        models.add(SearchItemModel("EX"))
-        models.add(SearchItemModel("VG"))
-        models.add(SearchItemModel("GD"))
-        models.add(SearchItemModel("G"))
-        models.add(SearchItemModel("F"))
-        val adapter = SearchItemAdapter(this, models, 2)
+        launch {
+            withContext(Dispatchers.Main) {
 
-        rv.adapter = adapter
-        adapter.onJwelleryClick(object : onSearchItemClick {
-            override fun onClick(obj: SearchItemModel) {
-                obj.isSelected = !obj.isSelected
-                addCut(obj.name)
-                adapter.notifyDataSetChanged()
+                val models: MutableList<SearchItemModel> = java.util.ArrayList()
+                models.add(SearchItemModel("EX"))
+                models.add(SearchItemModel("VG"))
+                models.add(SearchItemModel("GD"))
+                models.add(SearchItemModel("G"))
+                models.add(SearchItemModel("F"))
+                val adapter = SearchItemAdapter(this@MainNavigation, models, 2)
+
+                rv.adapter = adapter
+                adapter.onJwelleryClick(object : onSearchItemClick {
+                    override fun onClick(obj: SearchItemModel) {
+                        obj.isSelected = !obj.isSelected
+                        addCut(obj.name)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
             }
-        })
+        }
     }
 
     fun loadPol(rv: RecyclerView) {
-        rv.layoutManager = GridLayoutManager(this, 1)
+        rv.layoutManager = GridLayoutManager(this@MainNavigation, 1)
         rv.setHasFixedSize(true)
-        val models: MutableList<SearchItemModel> = java.util.ArrayList()
-        models.add(SearchItemModel("EX"))
-        models.add(SearchItemModel("VG"))
-        models.add(SearchItemModel("GD"))
-        models.add(SearchItemModel("G"))
-        models.add(SearchItemModel("F"))
-        val adapter = SearchItemAdapter(this, models, 2)
+        launch {
+            withContext(Dispatchers.Main) {
 
-        rv.adapter = adapter
-        adapter.onJwelleryClick(object : onSearchItemClick {
-            override fun onClick(obj: SearchItemModel) {
-                obj.isSelected = !obj.isSelected
-                addPolKey(obj.name)
-                adapter.notifyDataSetChanged()
+                val models: MutableList<SearchItemModel> = java.util.ArrayList()
+                models.add(SearchItemModel("EX"))
+                models.add(SearchItemModel("VG"))
+                models.add(SearchItemModel("GD"))
+                models.add(SearchItemModel("G"))
+                models.add(SearchItemModel("F"))
+                val adapter = SearchItemAdapter(this@MainNavigation, models, 2)
+
+                rv.adapter = adapter
+                adapter.onJwelleryClick(object : onSearchItemClick {
+                    override fun onClick(obj: SearchItemModel) {
+                        obj.isSelected = !obj.isSelected
+                        addPolKey(obj.name)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
             }
-        })
+        }
     }
 
     fun loadSym(rv: RecyclerView) {
-        rv.layoutManager = GridLayoutManager(this, 1)
+        rv.layoutManager = GridLayoutManager(this@MainNavigation, 1)
         rv.setHasFixedSize(true)
-        val models: MutableList<SearchItemModel> = java.util.ArrayList()
-        models.add(SearchItemModel("EX"))
-        models.add(SearchItemModel("VG"))
-        models.add(SearchItemModel("GD"))
-        models.add(SearchItemModel("G"))
-        models.add(SearchItemModel("F"))
-        val adapter = SearchItemAdapter(this, models, 2)
+        launch {
+            withContext(Dispatchers.Main) {
 
-        rv.adapter = adapter
-        adapter.onJwelleryClick(object : onSearchItemClick {
-            override fun onClick(obj: SearchItemModel) {
-                obj.isSelected = !obj.isSelected
-                addSymKey(obj.name)
-                adapter.notifyDataSetChanged()
+                val models: MutableList<SearchItemModel> = java.util.ArrayList()
+                models.add(SearchItemModel("EX"))
+                models.add(SearchItemModel("VG"))
+                models.add(SearchItemModel("GD"))
+                models.add(SearchItemModel("G"))
+                models.add(SearchItemModel("F"))
+                val adapter = SearchItemAdapter(this@MainNavigation, models, 2)
+
+                rv.adapter = adapter
+                adapter.onJwelleryClick(object : onSearchItemClick {
+                    override fun onClick(obj: SearchItemModel) {
+                        obj.isSelected = !obj.isSelected
+                        addSymKey(obj.name)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
             }
-        })
+        }
     }
 
     fun loadClarity(rv: RecyclerView) {
-        rv.layoutManager = GridLayoutManager(this, 2)
+        rv.layoutManager = GridLayoutManager(this@MainNavigation, 2)
         rv.setHasFixedSize(true)
-        val models: MutableList<SearchItemModel> = java.util.ArrayList()
-        models.add(SearchItemModel("IF"))
-        models.add(SearchItemModel("VVS"))
-        models.add(SearchItemModel("VVS1"))
-        models.add(SearchItemModel("VVS2"))
-        models.add(SearchItemModel("VS"))
-        models.add(SearchItemModel("VS1"))
-        models.add(SearchItemModel("VS2"))
-        models.add(SearchItemModel("SI"))
-        models.add(SearchItemModel("SI1"))
-        models.add(SearchItemModel("SI2"))
-        models.add(SearchItemModel("SI3"))
-        models.add(SearchItemModel("I1"))
-        models.add(SearchItemModel("I2"))
-        models.add(SearchItemModel("I3"))
-        val adapter = SearchItemAdapter(this, models, 2)
+        launch {
+            withContext(Dispatchers.Main) {
 
-        rv.adapter = adapter
-        adapter.onJwelleryClick(object : onSearchItemClick {
-            override fun onClick(obj: SearchItemModel) {
-                obj.isSelected = !obj.isSelected
-                addDia(obj.name)
-                adapter.notifyDataSetChanged()
+                val models: MutableList<SearchItemModel> = java.util.ArrayList()
+                models.add(SearchItemModel("IF"))
+                models.add(SearchItemModel("VVS"))
+                models.add(SearchItemModel("VVS1"))
+                models.add(SearchItemModel("VVS2"))
+                models.add(SearchItemModel("VS"))
+                models.add(SearchItemModel("VS1"))
+                models.add(SearchItemModel("VS2"))
+                models.add(SearchItemModel("SI"))
+                models.add(SearchItemModel("SI1"))
+                models.add(SearchItemModel("SI2"))
+                models.add(SearchItemModel("SI3"))
+                models.add(SearchItemModel("I1"))
+                models.add(SearchItemModel("I2"))
+                models.add(SearchItemModel("I3"))
+                val adapter = SearchItemAdapter(this@MainNavigation, models, 2)
+
+                rv.adapter = adapter
+                adapter.onJwelleryClick(object : onSearchItemClick {
+                    override fun onClick(obj: SearchItemModel) {
+                        obj.isSelected = !obj.isSelected
+                        addDia(obj.name)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
             }
-        })
+        }
     }
 
     fun addShape(shape: String){
@@ -469,7 +509,7 @@ class MainNavigation : BaseActivity() {
     fun shapeKey(shape: String) : String{
         var key = ""
         when(shape.toUpperCase()){
-            "ROUND" -> key = "2441442"
+            "ROUND" -> key = "2,441,442"
             "PRINCESS" -> key = "78"
             "CUSHION" -> key = "19"
             "CUSHION B" -> key = "85"
