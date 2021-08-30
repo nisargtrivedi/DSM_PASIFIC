@@ -74,6 +74,21 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
 //                (context as MainNavigation).lab = ""
 
                 binding.imgClose.setOnClickListener {
+//                    (context as MainNavigation).searchList.clear()
+//                    (context as MainNavigation).ClarityList.clear()
+//                    (context as MainNavigation).diaList.clear()
+//                    (context as MainNavigation).cutList.clear()
+//                    (context as MainNavigation).polList.clear()
+//                    (context as MainNavigation).symList.clear()
+//                    (context as MainNavigation).edtCaratList.clear()
+//                    (context as MainNavigation).edtPriceList.clear()
+//                    (context as MainNavigation).searchEditext = ""
+                   // (context as MainNavigation).lab = ""
+                    (context as MainNavigation).selectItem(10)
+
+
+                }
+                binding.btnClear.setOnClickListener {
                     (context as MainNavigation).searchList.clear()
                     (context as MainNavigation).ClarityList.clear()
                     (context as MainNavigation).diaList.clear()
@@ -85,8 +100,6 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                     (context as MainNavigation).searchEditext = ""
                     (context as MainNavigation).lab = ""
                     (context as MainNavigation).selectItem(10)
-
-
                 }
 
                 (context as MainNavigation).loadSearchItem(binding.rvSearchItems);
@@ -95,6 +108,16 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                 (context as MainNavigation).loadPol(binding.rvPol);
                 (context as MainNavigation).loadSym(binding.rvSym);
                 (context as MainNavigation).loadClarity(binding.rvClarity);
+
+                if((context as MainNavigation).edtCaratList.size>0){
+                    binding.edtFromCarat.setText((context as MainNavigation).edtCaratList.get(0).toString())
+                    binding.edtToCarat.setText((context as MainNavigation).edtCaratList[1].toString())
+                }
+
+                if((context as MainNavigation).edtPriceList.size>0){
+                    binding.edtFromPrice.setText((context as MainNavigation).edtPriceList.get(0).toString())
+                    binding.edtToPrice.setText((context as MainNavigation).edtPriceList[1].toString())
+                }
 
 
                 adapter= LabAdapter(activity,(context as MainNavigation).labsList)
@@ -113,10 +136,12 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                         (context as MainNavigation).searchEditext = binding.edtSearch.text.toString()
                     }
                     if (!TextUtils.isEmpty(binding.edtFromCarat.text) && !TextUtils.isEmpty(binding.edtToCarat.text)) {
+                        (context as MainNavigation).edtCaratList.clear()
                         (context as MainNavigation).edtCaratList.add(binding.edtFromCarat.text.toString())
                         (context as MainNavigation).edtCaratList.add(binding.edtToCarat.text.toString())
                     }
                     if (!TextUtils.isEmpty(binding.edtFromPrice.text) && !TextUtils.isEmpty(binding.edtToPrice.text)) {
+                        (context as MainNavigation).edtPriceList.clear()
                         (context as MainNavigation).edtPriceList.add(binding.edtFromPrice.text.toString())
                         (context as MainNavigation).edtPriceList.add(binding.edtToPrice.text.toString())
                     }

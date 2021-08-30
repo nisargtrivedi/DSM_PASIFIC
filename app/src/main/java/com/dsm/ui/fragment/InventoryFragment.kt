@@ -149,6 +149,25 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
                 })
 
+                binding.btnClear.setOnClickListener {
+                    (context as MainNavigation).searchList.clear()
+                    (context as MainNavigation).ClarityList.clear()
+                    (context as MainNavigation).diaList.clear()
+                    (context as MainNavigation).cutList.clear()
+                    (context as MainNavigation).polList.clear()
+                    (context as MainNavigation).symList.clear()
+                    (context as MainNavigation).edtCaratList.clear()
+                    (context as MainNavigation).edtPriceList.clear()
+                    (context as MainNavigation).searchEditext = ""
+                    (context as MainNavigation).lab = ""
+                    pageNo = 0
+                    endPageNo = 1
+                    currentPage = 0
+                    diamondList.clear()
+                    inventoryAdapter.notifyDataSetChanged()
+                    binding.rvInventory.scrollToPosition(0)
+                    getShapes()
+                }
             }
           }
     }
@@ -218,6 +237,13 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
             isLoading = false
             return
         }
+        if(!(context as MainNavigation).searchList.isNullOrEmpty()){
+            binding.tabShapes.visibility = View.GONE
+            binding.btnClear.visibility = View.VISIBLE
+        }else{
+            binding.btnClear.visibility = View.GONE
+            binding.tabShapes.visibility = View.VISIBLE
+        }
         var search = if((context as MainNavigation).searchList.isNullOrEmpty()) null else android.text.TextUtils.join(",", (context as MainNavigation).searchList)
         var clr = if((context as MainNavigation).ClarityList.isNullOrEmpty()) null else android.text.TextUtils.join(",", (context as MainNavigation).ClarityList)
         var dia = if((context as MainNavigation).diaList.isNullOrEmpty()) null else android.text.TextUtils.join(",", (context as MainNavigation).diaList)
@@ -242,36 +268,51 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                         showLoading(activity)
                     }
                     Status.SUCCESS -> {
+                        Log.d("Error-","Call Success")
                         hideLoading()
                         if (resource.data!!.ResponseStatus == 200) {
                             inventoryAdapter.addPermission(resource.data.diamondData.permissionModel)
                             if (resource.data.diamondData.permissionModel.withdraw_website_access) {
                                 binding.rvInventory.visibility = View.GONE
+                                binding.tvMsg.visibility = View.VISIBLE
+                                binding.tvMsg.text = "No access"
                             } else {
-                                binding.rvInventory.visibility = View.VISIBLE
-                                if (resource.data.diamondData.diamonds.data.isNotEmpty()) {
-                                    //diamondList.clear()
-                                    diamondList.addAll(resource.data.diamondData.diamonds.data)
-                                    //diamondList.notifyAll()
-                                    currentPage = resource.data.diamondData.diamonds.current_page
-                                    endPageNo = resource.data.diamondData.diamonds.last_page
-                                    if (resource.data.diamondData.lookUpData.labsList.size > 0) {
-                                        (context as MainNavigation).labsList.clear()
-                                        (context as MainNavigation).labsList.addAll(resource.data.diamondData.lookUpData.labsList)
+                                //binding.rvInventory.visibility = View.VISIBLE
+                                    if(resource.data.diamondData.diamonds!=null) {
+                                        if (!resource.data.diamondData.diamonds.data.isNullOrEmpty()) {
+                                            Log.d("Error-", "Call If")
+                                            //diamondList.clear()
+                                            diamondList.addAll(resource.data.diamondData.diamonds.data)
+                                            //diamondList.notifyAll()
+                                            currentPage = resource.data.diamondData.diamonds.current_page
+                                            endPageNo = resource.data.diamondData.diamonds.last_page
+                                            if (resource.data.diamondData.lookUpData.labsList.size > 0) {
+                                                (context as MainNavigation).labsList.clear()
+                                                (context as MainNavigation).labsList.addAll(resource.data.diamondData.lookUpData.labsList)
+                                            }
+                                            isLoading = false
+                                            inventoryAdapter.notifyDataSetChanged()
+                                            binding.tvMsg.visibility = View.GONE
+                                            binding.rvInventory.visibility = View.VISIBLE
+                                        } else {
+                                            Log.d("Error-", "Call Else")
+                                            binding.tvMsg.visibility = View.VISIBLE
+                                            binding.rvInventory.visibility = View.GONE
+                                        }
+                                    }else{
+                                        binding.tvMsg.visibility = View.VISIBLE
+                                        binding.rvInventory.visibility = View.GONE
                                     }
-                                    isLoading = false
-                                    inventoryAdapter.notifyDataSetChanged()
-                                    binding.tvMsg.visibility = View.GONE
-                                    binding.rvInventory.visibility = View.VISIBLE
-                                }else{
-                                    binding.tvMsg.visibility = View.VISIBLE
-                                    binding.rvInventory.visibility = View.GONE
-                                }
                             }
+                            preferences.set("COMPANY",resource.data.diamondData.userModel.company_name+"")
                         }
+
                     }
                     Status.ERROR -> {
                         hideLoading()
+                        binding.tvMsg.visibility = View.VISIBLE
+                        binding.rvInventory.visibility = View.GONE
+                        Log.d("Error-","Call Error")
                     }
                 }
             }

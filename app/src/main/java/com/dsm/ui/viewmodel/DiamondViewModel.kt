@@ -1,5 +1,6 @@
 package com.dsm.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.dsm.ui.repo.DiamondRepo
@@ -27,6 +28,7 @@ class DiamondViewModel(private val diamondRepo: DiamondRepo) : ViewModel() {
             emit(Resource.success(data = diamondRepo.getAllDiamond(email,shape,page,query,srch_carat,srch_status,srch_dia_shape,srch_lab,srch_dia_clr,srch_dia_cla,
             srch_price,srch_dia_fcut,srch_dia_pol,srch_dia_sym)))
         } catch (exception: Exception) {
+            Log.e("Error-->",exception.toString())
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }

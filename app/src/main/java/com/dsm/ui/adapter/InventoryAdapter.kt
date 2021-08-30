@@ -140,7 +140,7 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
                     if (permissionModel.show_location) {
                         task.location
                     } else {
-
+                        ""
                     }
         )
         if(task.diamond_status.toString().toLowerCase()=="upcoming"){
@@ -150,7 +150,7 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         }else{
             holder.llStatus.setBackgroundColor(Color.TRANSPARENT)
         }
-        if(permissionModel.user_show_price){
+        if(permissionModel.show_price){
             if(!permissionModel.show_price_aud){
                 holder.tvTotal.text =  if(!permissionModel.show_pricelink) task.diamond_selling_price else { if(task.isshowPrice==0) Html.fromHtml("<u>Show Price</u>") else task.diamond_selling_price }
                 holder.tvPPCT.text = if(!permissionModel.show_pricelink) task.perct_price else { if(task.isshowPrice==0) Html.fromHtml("<u>Show Price</u>") else task.perct_price }
@@ -159,11 +159,14 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
                 holder.tvPPCT.text = "-"
             }
         }else{
-            if(permissionModel.show_price_aud){
-                holder.tvTotal.text = if(!permissionModel.show_pricelink) task.diamond_selling_price else { if(task.isshowPrice==0) Html.fromHtml("<u>Show Price</u>") else task.diamond_selling_price }
-                holder.tvPPCT.text = if(!permissionModel.show_pricelink) task.perct_price else { if(task.isshowPrice==0) Html.fromHtml("<u>Show Price</u>") else task.perct_price }
-            }
+            holder.tvTotal.text = "-"
+            holder.tvPPCT.text = "-"
         }
+//        if(permissionModel.show_price_aud){
+//            holder.tvTotal.text = if(!permissionModel.show_pricelink) task.diamond_selling_price else { if(task.isshowPrice==0) Html.fromHtml("<u>Show Price</u>") else task.diamond_selling_price }
+//            holder.tvPPCT.text = if(!permissionModel.show_pricelink) task.perct_price else { if(task.isshowPrice==0) Html.fromHtml("<u>Show Price</u>") else task.perct_price }
+//        }
+
 
         holder.tvINS.text = task.diamond_status
 

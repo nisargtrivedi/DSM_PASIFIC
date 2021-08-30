@@ -45,6 +45,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         appPreferences=new AppPreferences(getActivity());
-        binding.tvTitle.setText("Customer Email : "+appPreferences.getString("EMAIL")+"\n"+"Company Name :");
+        binding.tvTitle.setText("Customer Email : "+appPreferences.getString("EMAIL")+"\n"+"Company Name :"+appPreferences.getString("COMPANY"));
     }
 }

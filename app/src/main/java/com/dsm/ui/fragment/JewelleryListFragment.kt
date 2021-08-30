@@ -211,8 +211,8 @@ class JewelleryListFragment : BaseFragment(),CoroutineScope,AdapterView.OnItemSe
 
                 binding.tvCategory.text = categoryModel.attribute_name
                 binding.llHeader.visibility = View.VISIBLE
-                binding.tvSortBy.visibility = View.VISIBLE
-                binding.spSorting.visibility = View.VISIBLE
+                binding.tvSortBy.visibility = View.INVISIBLE
+                binding.spSorting.visibility = View.INVISIBLE
                 binding.tvCategory.visibility = View.VISIBLE
                 binding.line.visibility = View.VISIBLE
                 binding.tvItemCount.visibility = View.VISIBLE

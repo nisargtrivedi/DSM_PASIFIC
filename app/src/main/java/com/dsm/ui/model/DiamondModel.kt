@@ -76,13 +76,13 @@ class DiamondModel : Serializable{
     var diamond_discount_final : String = ""
 
     @SerializedName("diamond_price_sell_AUD")
-    var diamond_price_sell_AUD : String = ""
+    var diamond_price_sell_AUD : String = "0"
 
     @SerializedName("perct_price")
-    var perct_price : String = ""
+    var perct_price : String = "0"
 
     @SerializedName("diamond_selling_price")
-    var diamond_selling_price : String = ""
+    var diamond_selling_price : String = "0"
 
     @SerializedName("certificate_link")
     var certificate_link : String = ""

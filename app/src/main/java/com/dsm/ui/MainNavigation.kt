@@ -348,6 +348,16 @@ class MainNavigation : BaseActivity() , CoroutineScope {
                         adapter.notifyDataSetChanged()
                     }
                 })
+
+                if(searchList.size>0) {
+                    for (i in 0..models.size-1) {
+                            if (searchList.contains(shapeKey(models[i].name))) {
+                                models[i].isSelected = true
+                            }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
     }
@@ -380,6 +390,15 @@ class MainNavigation : BaseActivity() , CoroutineScope {
                         adapter.notifyDataSetChanged()
                     }
                 })
+                if(ClarityList.size>0) {
+                    for (i in 0..models.size-1) {
+                        if (ClarityList.contains(clerityKey(models[i].name))) {
+                            models[i].isSelected = true
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
     }
@@ -406,6 +425,15 @@ class MainNavigation : BaseActivity() , CoroutineScope {
                         adapter.notifyDataSetChanged()
                     }
                 })
+                if(cutList.size>0) {
+                    for (i in 0..models.size-1) {
+                        if (cutList.contains(FcutKey(models[i].name))) {
+                            models[i].isSelected = true
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
     }
@@ -432,6 +460,15 @@ class MainNavigation : BaseActivity() , CoroutineScope {
                         adapter.notifyDataSetChanged()
                     }
                 })
+                if(polList.size>0) {
+                    for (i in 0..models.size-1) {
+                        if (polList.contains(diaPolKey(models[i].name))) {
+                            models[i].isSelected = true
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
     }
@@ -458,6 +495,15 @@ class MainNavigation : BaseActivity() , CoroutineScope {
                         adapter.notifyDataSetChanged()
                     }
                 })
+                if(symList.size>0) {
+                    for (i in 0..models.size-1) {
+                        if (symList.contains(diasymKey(models[i].name))) {
+                            models[i].isSelected = true
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
     }
@@ -493,6 +539,15 @@ class MainNavigation : BaseActivity() , CoroutineScope {
                         adapter.notifyDataSetChanged()
                     }
                 })
+                if(diaList.size>0) {
+                    for (i in 0..models.size-1) {
+                        if (diaList.contains(diaKey(models[i].name))) {
+                            models[i].isSelected = true
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
     }
