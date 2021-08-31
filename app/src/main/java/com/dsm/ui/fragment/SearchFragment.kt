@@ -120,6 +120,15 @@ class SearchFragment : Fragment() , CoroutineScope,View.OnTouchListener {
                 }
 
 
+                if(!(context as MainNavigation).lab.isNullOrEmpty()){
+                    for(i in 0..(context as MainNavigation).labsList.size-1){
+                        if((context as MainNavigation).lab==(context as MainNavigation).labsList[i].lab_id.toString()){
+                            (context as MainNavigation).labsList.add(0,(context as MainNavigation).labsList[i])
+                            (context as MainNavigation).labsList.removeAt(i)
+                        }
+                    }
+                }
+
                 adapter= LabAdapter(activity,(context as MainNavigation).labsList)
                 binding.spLabs.adapter = adapter
                 binding.spLabs.isSelected = false;  // otherwise listener will be called on initialization

@@ -376,7 +376,7 @@
                             android:backgroundTint="@color/blue"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_alignParentBottom="true"
-                            android:text="CLEAR FILTER"
+                            android:text="CLEAR"
                             android:textSize="@dimen/_11ssp"
                             android:id="@+id/btnClear"
                             android:paddingRight="@dimen/_10sdp"

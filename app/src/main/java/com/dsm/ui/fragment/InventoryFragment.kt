@@ -178,16 +178,23 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
     }
     private fun onFloatingButtonClick(){
         binding.floatingActionButton.setOnClickListener {
-            if(binding.tvDiamongEnquiry.visibility == View.GONE && binding.tvSelectAll.visibility == View.GONE){
-                binding.tvDiamongEnquiry.visibility = View.VISIBLE
-                binding.tvSelectAll.visibility = View.VISIBLE
-                binding.floatingActionButton.setImageResource(R.drawable.ic_close)
+
+            if(selecteddiamondlistforenquiry.size>0) {
+
+                if (binding.tvDiamongEnquiry.visibility == View.GONE) {
+                    binding.tvDiamongEnquiry.visibility = View.VISIBLE
+                    binding.tvSelectAll.visibility = View.GONE
+                    binding.floatingActionButton.setImageResource(R.drawable.ic_close)
+                } else {
+                    binding.tvDiamongEnquiry.visibility = View.GONE
+                    binding.tvSelectAll.visibility = View.GONE
+                    binding.floatingActionButton.setImageResource(R.drawable.ic_flat_menu)
+                }
             }else{
-                binding.tvDiamongEnquiry.visibility = View.GONE
-                binding.tvSelectAll.visibility = View.GONE
-                binding.floatingActionButton.setImageResource(R.drawable.ic_flat_menu)
+                (context as MainNavigation).showToast("Please select any diamond")
             }
         }
+
         binding.edtSearch.setOnClickListener{
             (context as MainNavigation).searchFragment()
         }
@@ -419,17 +426,24 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                         showLoading(activity)
                     }
                     Status.SUCCESS -> {
+                        hideLoading()
+                        (context as MainNavigation).showToast(if(resource.data!!.ResponseMessage=="OK")"Enquiry has been submitted successfully" else resource.data!!.ResponseMessage)
                         alert.cancel()
                         alert.dismiss()
-                        hideLoading()
-                        if (resource.data!!.ResponseStatus == 200) {
-                            (context as MainNavigation).showToast(resource.message)
-                        }else{
-                            (context as MainNavigation).showToast(resource.message)
+                        if (binding.tvDiamongEnquiry.visibility == View.GONE) {
+                            binding.tvDiamongEnquiry.visibility = View.VISIBLE
+                            binding.tvSelectAll.visibility = View.GONE
+                            binding.floatingActionButton.setImageResource(R.drawable.ic_close)
+                        } else {
+                            binding.tvDiamongEnquiry.visibility = View.GONE
+                            binding.tvSelectAll.visibility = View.GONE
+                            binding.floatingActionButton.setImageResource(R.drawable.ic_flat_menu)
                         }
                     }
                     Status.ERROR -> {
                         hideLoading()
+                        alert.cancel()
+                        alert.dismiss()
                     }
                 }
             }

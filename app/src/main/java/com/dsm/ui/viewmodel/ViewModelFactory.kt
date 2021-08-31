@@ -25,6 +25,8 @@ class ViewModelFactory(private val apiInterface: APIInterface) : ViewModelProvid
             return JewelleryDetailViewModel(JewelleryDetailRepo(apiInterface)) as T
         }else if (modelClass.isAssignableFrom(SendMailViewModel::class.java)) {
             return SendMailViewModel(MailRepo(apiInterface)) as T
+        }else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(ProfileRepo(apiInterface)) as T
         }
         throw IllegalArgumentException("Unknown class name")
     }

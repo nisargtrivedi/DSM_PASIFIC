@@ -91,20 +91,21 @@ public class BaseActivity extends AppCompatActivity {
         builder1.setCancelable(true);
         AlertDialog alert11 = builder1.create();
         alert11.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert11.getWindow().setGravity(Gravity.CENTER);
         alert11.show();
 
 
-        //Open Dialog with 50% width and height
+//        //Open Dialog with 50% width and height
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int displayWidth = displayMetrics.widthPixels;
         int displayHeight = displayMetrics.heightPixels;
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(alert11.getWindow().getAttributes());
-        int dialogWindowWidth = (int) (displayWidth * 0.5f);
-        int dialogWindowHeight = (int) (displayHeight * 0.5f);
+        int dialogWindowWidth = (int) (displayWidth * 0.4f);
+        // int dialogWindowHeight = (int) (displayHeight * 0.290f);
         layoutParams.width = dialogWindowWidth;
-        layoutParams.height = dialogWindowHeight;
+        //layoutParams.height = dialogWindowHeight;
         alert11.getWindow().setGravity(Gravity.CENTER);
         alert11.getWindow().setAttributes(layoutParams);
     }

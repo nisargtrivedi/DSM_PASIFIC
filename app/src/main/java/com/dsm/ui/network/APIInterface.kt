@@ -2,6 +2,7 @@ package com.dsm.ui.network
 
 
 import com.dsm.ui.model.BaseModel
+import com.dsm.ui.model.ProfileModel
 import com.dsm.ui.parser.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -125,4 +126,14 @@ interface APIInterface {
         @Field("product_price") product_price:String,
         @Field("customer_msg") customer_msg:String,
     ) : BaseModel
+
+    //profile API
+    @GET("profile")
+    suspend fun getProfile(
+            @Header("Content-Type") contentType : String,
+            @Header("customer-key") customerKey : String,
+            @Header("customer-secret") customerSecret : String,
+            @Header("x-api-key") xApiKey:String,
+            @Query("email") email:String
+    ) : ProfileModel
 }

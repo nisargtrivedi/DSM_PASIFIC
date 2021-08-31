@@ -133,7 +133,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 binding.tvWeight.text =
                                                     resource.data.list.jObj!!.gold_weight
                                                 binding.tvPrice.text =
-                                                    resource.data.list.jObj!!.jewellery_price + " + GST"
+                                                    resource.data.list.jObj!!.jewellery_price
 
                                                 if (!resource.data.list.jObj!!.image.isNullOrEmpty()) {
                                                     Glide.with(this)
@@ -206,7 +206,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                                                 binding.tvWeight.text =
                                                     resource.data.list.listModel!!.gold_weight
                                                 binding.tvPrice.text =
-                                                    resource.data.list.listModel!!.jewellery_price + " + GST"
+                                                    resource.data.list.listModel!!.jewellery_price
 
                                                 imagesList.clear()
                                                 imagesList.addAll(resource.data.list.listModel!!.images)
@@ -320,7 +320,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                 }
                 else -> {
                     sendMailAPI(appPreferences.getString("EMAIL"),
-                    edtMessage.text.toString())
+                    edtMessage.text.toString(),alert11)
                 }
             }
         }
@@ -339,7 +339,7 @@ class DetailActivity : BaseActivity() , CoroutineScope {
         }
     }
 
-    private fun sendMailAPI(email:String,message:String){
+    private fun sendMailAPI(email:String,message:String,alertDialog: AlertDialog){
 
 
         mailViewModel= ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(
@@ -353,14 +353,14 @@ class DetailActivity : BaseActivity() , CoroutineScope {
                     }
                     Status.SUCCESS -> {
                         hideLoading()
-                        if (resource.data!!.ResponseStatus == 200) {
-                           showToast(resource.message)
-                        }else{
-                            showToast(resource.message)
-                        }
+                        alertDialog.cancel()
+                        alertDialog.dismiss()
+                       showToast(if(resource.data!!.ResponseMessage=="OK")"Enquiry has been submitted successfully" else resource.data!!.ResponseMessage)
                     }
                     Status.ERROR -> {
                         hideLoading()
+                        alertDialog.cancel()
+                        alertDialog.dismiss()
                     }
                 }
             }

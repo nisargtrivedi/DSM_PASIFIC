@@ -68,13 +68,14 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         var tvTotal:TextView = view.findViewById(R.id.tvTotal)
         var tvINS:TextView = view.findViewById(R.id.tvINS)
         var chk: ImageView = view.findViewById(R.id.chk)
+        var img : ImageView = view.findViewById(R.id.img)
         var llImage:LinearLayout = view.findViewById(R.id.llImage)
         var llStatus : LinearLayout = view.findViewById(R.id.llStatus)
 
         var llPPCT : LinearLayout = view.findViewById(R.id.llPPCT)
         var llTotal : LinearLayout = view.findViewById(R.id.llTotal)
         var llCertyNo : LinearLayout = view.findViewById(R.id.llCertyNo)
-
+        var tvCertNo:TextView =view.findViewById(R.id.tvCertNo)
 
     }
 
@@ -86,8 +87,14 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         val task: DiamondModel = usersList[position]
 
 
-        holder.llImage.setOnClickListener {
-            openDialog.onDialogOpen(task)
+
+        if(permissionModel.show_diamond_image){
+            holder.img.visibility = View.VISIBLE
+            holder.llImage.setOnClickListener {
+                openDialog.onDialogOpen(task)
+            }
+        }else {
+            holder.img.visibility = View.INVISIBLE
         }
 
         holder.chk.setOnClickListener {
@@ -102,6 +109,7 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
                 holder.chk.setImageResource(R.drawable.blue_border)
             }
         }
+        holder.tvCertNo.text = task.diamond_lab
         holder.tvShape.setText(task.diamond_shape)
         holder.tvCarat.setText(task.diamond_size)
         holder.tvColor.setText(task.diamond_clr)

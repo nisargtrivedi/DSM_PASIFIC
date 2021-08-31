@@ -342,6 +342,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvCertNo"
                         android:textFontWeight="600"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -482,6 +483,7 @@
                         android:textSize="@dimen/_10sdp"></TextView>
 
                     <ImageView
+                        android:id="@+id/img"
                         android:elevation="@dimen/_3sdp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/round_diamond"
