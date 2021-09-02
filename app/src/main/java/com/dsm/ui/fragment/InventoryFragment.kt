@@ -108,7 +108,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
 
                 inventoryAdapter.DialogOpen(object : onDialogClick {
                     override fun onDialogOpen(obj: DiamondModel) {
-                        (context as MainNavigation).openSelectedImageDialog(obj.diamond_img_path, obj.diamond_lot_no + "-"+ obj.diamond_clr +"-"+obj.diamond_cla+"-"+obj.diamond_size)
+                        (context as MainNavigation).openSelectedImageDialog(obj.diamond_img_path, obj.diamond_lot_no + " "+ obj.diamond_clr +" "+obj.diamond_cla+" "+obj.diamond_size)
                     }
                 })
                 inventoryAdapter.onPriceClick(object :onPriceLinkClick{
@@ -282,7 +282,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                             if (resource.data.diamondData.permissionModel.withdraw_website_access) {
                                 binding.rvInventory.visibility = View.GONE
                                 binding.tvMsg.visibility = View.VISIBLE
-                                binding.tvMsg.text = "No access"
+                                binding.tvMsg.text = resource.message
                             } else {
                                 //binding.rvInventory.visibility = View.VISIBLE
                                     if(resource.data.diamondData.diamonds!=null) {
@@ -312,6 +312,11 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                                     }
                             }
                             preferences.set("COMPANY",resource.data.diamondData.userModel.company_name+"")
+                        }
+                        else{
+                            binding.rvInventory.visibility = View.GONE
+                            binding.tvMsg.visibility = View.VISIBLE
+                            binding.tvMsg.text = resource.message
                         }
 
                     }

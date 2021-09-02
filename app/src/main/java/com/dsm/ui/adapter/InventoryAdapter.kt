@@ -76,6 +76,7 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
         var llTotal : LinearLayout = view.findViewById(R.id.llTotal)
         var llCertyNo : LinearLayout = view.findViewById(R.id.llCertyNo)
         var tvCertNo:TextView =view.findViewById(R.id.tvCertNo)
+        var tvDash:TextView=view.findViewById(R.id.tvDash)
 
     }
 
@@ -90,11 +91,13 @@ class InventoryAdapter(context: Context, usersList: List<DiamondModel>) :
 
         if(permissionModel.show_diamond_image){
             holder.img.visibility = View.VISIBLE
+            holder.tvDash.visibility = View.GONE
             holder.llImage.setOnClickListener {
                 openDialog.onDialogOpen(task)
             }
         }else {
-            holder.img.visibility = View.INVISIBLE
+            holder.img.visibility = View.GONE
+            holder.tvDash.visibility=View.VISIBLE
         }
 
         holder.chk.setOnClickListener {

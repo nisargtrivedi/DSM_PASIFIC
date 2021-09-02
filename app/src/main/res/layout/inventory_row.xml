@@ -483,13 +483,24 @@
                         android:textSize="@dimen/_10sdp"></TextView>
 
                     <ImageView
+                        android:visibility="visible"
                         android:id="@+id/img"
                         android:elevation="@dimen/_3sdp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/round_diamond"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"></ImageView>
-
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tvDash"
+                        android:textFontWeight="600"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_10sdp"
+                        android:fontFamily="@font/mon_medium"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/_10sdp"></TextView>
                 </LinearLayout>
 
                 <LinearLayout
