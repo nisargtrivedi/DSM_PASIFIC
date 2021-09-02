@@ -94,24 +94,26 @@ class JewelleryFragment : BaseFragment(), CoroutineScope {
                     }
                     Status.SUCCESS -> {
                         hideLoading()
-                        if (resource.data!!.ResponseStatus == 200) {
-                            if (resource.data.list != null && resource.data.list.list.isNotEmpty()) {
-                                binding.rvJewellery.visibility = View.VISIBLE
-                                binding.tvMessage.visibility = View.GONE
+                        when (resource.data!!.ResponseStatus) {
+                            200 -> {
+                                if (resource.data.list != null && resource.data.list.list.isNotEmpty()) {
+                                    binding.rvJewellery.visibility = View.VISIBLE
+                                    binding.tvMessage.visibility = View.GONE
 
-                                jewelleryList.clear()
-                                jewelleryList.addAll(resource.data.list.list)
-                                (activity as MainNavigation).setCategoryList(jewelleryList)
-                                jewelleryAdapter.notifyDataSetChanged()
+                                    jewelleryList.clear()
+                                    jewelleryList.addAll(resource.data.list.list)
+                                    (activity as MainNavigation).setCategoryList(jewelleryList)
+                                    jewelleryAdapter.notifyDataSetChanged()
 
-                            }else{
-                                binding.rvJewellery.visibility = View.GONE
+                                }else{
+                                    binding.rvJewellery.visibility = View.GONE
+                                }
                             }
-                        }
-                        else{
-                            binding.rvJewellery.visibility =View.GONE
-                            binding.tvMessage.visibility = View.VISIBLE
-                            binding.tvMessage.text = resource.data.ResponseMessage
+                            else -> {
+                                binding.rvJewellery.visibility =View.GONE
+                                binding.tvMessage.visibility = View.VISIBLE
+                                binding.tvMessage.text = resource.data.ResponseMessage
+                            }
                         }
                     }
                     Status.ERROR -> {
