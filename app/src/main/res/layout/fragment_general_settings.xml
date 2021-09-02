@@ -62,7 +62,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_16sdp"
             android:layout_toRightOf="@id/img2"
-            android:text="Version 1.1(1)"
+            android:text="Version 1.2(1)"
             android:textColor="@color/white"
             android:textSize="@dimen/_11ssp"
             android:id="@+id/tvTitle3"
