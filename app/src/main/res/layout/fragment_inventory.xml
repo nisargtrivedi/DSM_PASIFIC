@@ -79,6 +79,7 @@ android:background="@color/app_back_color"
     <TextView
         android:visibility="gone"
         android:id="@+id/tvMsg"
+        android:fontFamily="@font/opensans_semibold"
         android:layout_above="@id/bottomLayout"
         android:layout_below="@id/rlMenu"
         android:textColor="@color/white"

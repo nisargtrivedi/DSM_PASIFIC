@@ -130,6 +130,16 @@ android:background="@color/app_back_color"
                 android:layout_height="wrap_content">
             </androidx.recyclerview.widget.RecyclerView>
 
+            <TextView
+                android:layout_margin="@dimen/_5sdp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/opensans_semibold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/tvMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></TextView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

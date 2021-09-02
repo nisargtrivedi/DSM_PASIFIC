@@ -48,7 +48,8 @@ interface APIInterface {
         @Header("Content-Type") contentType : String,
         @Header("customer-key") customerKey : String,
         @Header("customer-secret") customerSecret : String,
-        @Header("x-api-key") xApiKey:String
+        @Header("x-api-key") xApiKey:String,
+        @Query("email_id") email:String
     ) : JwelleryCategoryParser
 
 

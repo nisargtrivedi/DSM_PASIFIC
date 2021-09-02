@@ -5,5 +5,5 @@ import com.dsm.ui.network.RetrofitBuilder
 
 class JewelleryCategoryRepo(private val apiInterface: APIInterface) {
 
-    suspend fun getAllJewelleryCategory() = apiInterface.getAllJewelleryCategory(RetrofitBuilder.CONTENT_TYPE,RetrofitBuilder.CUSTOMER_KEY,RetrofitBuilder.CUSTOMER_SECRET,RetrofitBuilder.X_API)
+    suspend fun getAllJewelleryCategory(email:String) = apiInterface.getAllJewelleryCategory(RetrofitBuilder.CONTENT_TYPE,RetrofitBuilder.CUSTOMER_KEY,RetrofitBuilder.CUSTOMER_SECRET,RetrofitBuilder.X_API,email)
 }

@@ -22,6 +22,7 @@ import com.dsm.ui.listener.onJwelleryClick
 import com.dsm.ui.model.JewelleryCategoryModel
 import com.dsm.ui.model.JewelleryModel
 import com.dsm.ui.network.RetrofitBuilder
+import com.dsm.ui.util.AppPreferences
 import com.dsm.ui.util.Status
 import com.dsm.ui.viewmodel.JewelleryCategoryViewModel
 import com.dsm.ui.viewmodel.ShapeViewModel
@@ -42,6 +43,7 @@ class JewelleryFragment : BaseFragment(), CoroutineScope {
 
     private lateinit var job: Job
 
+    lateinit var appPreferences: AppPreferences
     // context for io thread
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
@@ -74,6 +76,7 @@ class JewelleryFragment : BaseFragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         job = Job()
+        appPreferences= AppPreferences(this.activity)
         loadCategory()
 
     }
@@ -83,7 +86,7 @@ class JewelleryFragment : BaseFragment(), CoroutineScope {
             ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService)).get(
                 JewelleryCategoryViewModel::class.java
             )
-        jewelleryCategoryViewModel.getAllJewelleryCategory().observe(viewLifecycleOwner, Observer {
+        jewelleryCategoryViewModel.getAllJewelleryCategory(appPreferences.getString("EMAIL")).observe(viewLifecycleOwner, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.LOADING -> {
@@ -94,6 +97,8 @@ class JewelleryFragment : BaseFragment(), CoroutineScope {
                         if (resource.data!!.ResponseStatus == 200) {
                             if (resource.data.list != null && resource.data.list.list.isNotEmpty()) {
                                 binding.rvJewellery.visibility = View.VISIBLE
+                                binding.tvMessage.visibility = View.GONE
+
                                 jewelleryList.clear()
                                 jewelleryList.addAll(resource.data.list.list)
                                 (activity as MainNavigation).setCategoryList(jewelleryList)
@@ -102,6 +107,11 @@ class JewelleryFragment : BaseFragment(), CoroutineScope {
                             }else{
                                 binding.rvJewellery.visibility = View.GONE
                             }
+                        }
+                        else{
+                            binding.rvJewellery.visibility =View.GONE
+                            binding.tvMessage.visibility = View.VISIBLE
+                            binding.tvMessage.text = resource.data.ResponseMessage
                         }
                     }
                     Status.ERROR -> {
