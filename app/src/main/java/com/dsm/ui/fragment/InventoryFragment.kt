@@ -276,15 +276,17 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                     }
                     Status.SUCCESS -> {
                         Log.d("Error-","Call Success")
+
                         hideLoading()
-                        if (resource.data!!.ResponseStatus == 200) {
-                            inventoryAdapter.addPermission(resource.data.diamondData.permissionModel)
-                            if (resource.data.diamondData.permissionModel.withdraw_website_access) {
-                                binding.rvInventory.visibility = View.GONE
-                                binding.tvMsg.visibility = View.VISIBLE
-                                binding.tvMsg.text = resource.message
-                            } else {
-                                //binding.rvInventory.visibility = View.VISIBLE
+                        when (resource.data!!.ResponseStatus) {
+                            200 -> {
+                                inventoryAdapter.addPermission(resource.data.diamondData.permissionModel)
+                                if (resource.data.diamondData.permissionModel.withdraw_website_access) {
+                                    binding.rvInventory.visibility = View.GONE
+                                    binding.tvMsg.visibility = View.VISIBLE
+                                    binding.tvMsg.text = resource.data.ResponseMessage
+                                } else {
+                                    //binding.rvInventory.visibility = View.VISIBLE
                                     if(resource.data.diamondData.diamonds!=null) {
                                         if (!resource.data.diamondData.diamonds.data.isNullOrEmpty()) {
                                             Log.d("Error-", "Call If")
@@ -293,7 +295,7 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                                             //diamondList.notifyAll()
                                             currentPage = resource.data.diamondData.diamonds.current_page
                                             endPageNo = resource.data.diamondData.diamonds.last_page
-                                            if (resource.data.diamondData.lookUpData.labsList.size > 0) {
+                                            if (resource.data.diamondData.lookUpData.labsList.isNotEmpty()) {
                                                 (context as MainNavigation).labsList.clear()
                                                 (context as MainNavigation).labsList.addAll(resource.data.diamondData.lookUpData.labsList)
                                             }
@@ -305,26 +307,33 @@ class InventoryFragment : BaseFragment(),CoroutineScope  {
                                             Log.d("Error-", "Call Else")
                                             binding.tvMsg.visibility = View.VISIBLE
                                             binding.rvInventory.visibility = View.GONE
+                                            binding.tvMsg.text = resource.data.ResponseMessage
                                         }
                                     }else{
                                         binding.tvMsg.visibility = View.VISIBLE
                                         binding.rvInventory.visibility = View.GONE
+                                        binding.tvMsg.text = resource.data.ResponseMessage
                                     }
+                                }
+                                preferences.set("COMPANY",resource.data.diamondData.userModel.company_name+"")
                             }
-                            preferences.set("COMPANY",resource.data.diamondData.userModel.company_name+"")
+                            403 -> {
+                                binding.rvInventory.visibility = View.GONE
+                                binding.tvMsg.visibility = View.VISIBLE
+                                binding.tvMsg.text = resource.data.ResponseMessage
+                            }
+                            else -> {
+                                binding.rvInventory.visibility = View.GONE
+                                binding.tvMsg.visibility = View.VISIBLE
+                                binding.tvMsg.text = resource.data.ResponseMessage
+                            }
                         }
-                        else{
-                            binding.rvInventory.visibility = View.GONE
-                            binding.tvMsg.visibility = View.VISIBLE
-                            binding.tvMsg.text = resource.message
-                        }
-
                     }
                     Status.ERROR -> {
                         hideLoading()
                         binding.tvMsg.visibility = View.VISIBLE
+                        binding.tvMsg.text = "Thank you for visiting our app. Our app is under maintenance , please contact our office- 61 2 92321410 for all inquiries."
                         binding.rvInventory.visibility = View.GONE
-                        Log.d("Error-","Call Error")
                     }
                 }
             }
